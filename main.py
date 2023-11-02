@@ -43,7 +43,7 @@ sidebar_frame = CTkFrame(master=app, fg_color="#0E1121",  width=176, height=645,
 sidebar_frame.pack_propagate(0)
 sidebar_frame.pack(fill="y", anchor="w", side="left")
 
-logo_img_data = Image.open("logo.png")
+logo_img_data = Image.open("resources/logo.png")
 logo_img = CTkImage(dark_image=logo_img_data, light_image=logo_img_data, size=(116, 116))
 CTkLabel(master=sidebar_frame, text="", image=logo_img).pack(pady=(30, 0), anchor="center")
 
@@ -73,7 +73,7 @@ def dashboard_command():
     #other functions
     show_dbtable()
 
-dashboard_img_data = Image.open("dashboard_icon.png")
+dashboard_img_data = Image.open("resources/dashboard_icon.png")
 dashboard_img = CTkImage(dark_image=dashboard_img_data, light_image=dashboard_img_data)
 dashboard_button = CTkButton(master=sidebar_frame, image=dashboard_img, text="Dashboard", fg_color="#191D32", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=dashboard_command)
 dashboard_button.pack(anchor="center", pady=(60, 0))
@@ -97,7 +97,7 @@ def order_command():
     #other functions
     
 
-order_img_data = Image.open("order_icon.png")
+order_img_data = Image.open("resources/order_icon.png")
 order_img = CTkImage(dark_image=order_img_data, light_image=order_img_data)
 order_button = CTkButton(master=sidebar_frame, image=order_img, text="Order", fg_color="transparent", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=order_command)
 order_button.pack(anchor="center", pady=(10, 0))
@@ -121,7 +121,7 @@ def checkout_command():
     #other functions
     
 
-checkout_img_data = Image.open("checkout_icon.png")
+checkout_img_data = Image.open("resources/checkout_icon.png")
 checkout_img = CTkImage(dark_image=checkout_img_data, light_image=checkout_img_data)
 checkout_button = CTkButton(master=sidebar_frame, image=checkout_img, text="Check Out", fg_color="transparent", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=checkout_command)
 checkout_button.pack(anchor="center", pady=(10, 0))
@@ -145,7 +145,7 @@ def inventory_command():
     #other functions
     show_InventTable()
 
-inventory_img_data = Image.open("inventory_icon.png")
+inventory_img_data = Image.open("resources/inventory_icon.png")
 inventory_img = CTkImage(dark_image=inventory_img_data, light_image=inventory_img_data)
 inventory_button = CTkButton(master=sidebar_frame, image=inventory_img, text="Inventory", fg_color="transparent", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=inventory_command)
 inventory_button.pack(anchor="center", pady=(10, 0))
@@ -169,7 +169,7 @@ def accountsettings_command():
     #other_functions
     
 
-accountsettings_img_data = Image.open("accountsettings_icon.png")
+accountsettings_img_data = Image.open("resources/accountsettings_icon.png")
 accountsettings_img = CTkImage(dark_image=accountsettings_img_data, light_image=accountsettings_img_data)
 accountsettings_button = CTkButton(master=sidebar_frame, image=accountsettings_img, text="Account Settings", fg_color="transparent", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=accountsettings_command)
 accountsettings_button.pack(anchor="center", pady=(10, 0))
@@ -193,7 +193,7 @@ def logout_command():
     else:
         pass
 
-logout_img_data = Image.open("logout_icon.png")
+logout_img_data = Image.open("resources/logout_icon.png")
 logout_img = CTkImage(dark_image=logout_img_data, light_image=logout_img_data)
 logout_button = CTkButton(master=sidebar_frame, image=logout_img, text="Log Out", fg_color="transparent", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=logout_command)
 logout_button.pack(anchor="center", pady=(95, 0))
@@ -254,7 +254,7 @@ label_button_frame.pack (anchor="w", side='left')
 
 CTkLabel(master=label_button_frame, text="In Queue", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 27),).pack(side='left')
 
-addorder_img_data = Image.open("addorder_icon.png")
+addorder_img_data = Image.open("resources/addorder_icon.png")
 addorder_img = CTkImage(dark_image=addorder_img_data, light_image=addorder_img_data)
 addorder_button = CTkButton(master=label_button_frame, image=addorder_img, text="Create an Order", fg_color="#1F243E", font=("Poppins Bold", 12), hover_color="#181A27", anchor="e", width=146, height=25, command=order_command, compound="right")
 addorder_button.pack(side='left', padx=(355, 0))
@@ -564,7 +564,7 @@ CTkLabel(master=orderScrollable_frame, text="Meals                              
 orderItem_1_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_1_frame.pack(anchor="nw", pady=(12, 0))  
 
-ordernum_1_img_data = Image.open("1pc-Chickenjoy-Solo.png")
+ordernum_1_img_data = Image.open("resources/1pc-Chickenjoy-Solo.png")
 ordernum_1_img = CTkImage(dark_image=ordernum_1_img_data, light_image=ordernum_1_img_data, size=(90, 59))
 CTkLabel(master=orderItem_1_frame, text="", image=ordernum_1_img).pack(side='left')
 
@@ -579,7 +579,7 @@ itemNumber_1.pack(side='left', padx=(70,38))
 orderItem_2_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_2_frame.pack(anchor="nw", pady=(12, 0))  
 
-ordernum_2_img_data = Image.open("Jolly-Spaghetti-Solo 1.png")
+ordernum_2_img_data = Image.open("resources/Jolly-Spaghetti-Solo 1.png")
 ordernum_2_img = CTkImage(dark_image=ordernum_2_img_data, light_image=ordernum_2_img_data, size=(90, 59))
 CTkLabel(master=orderItem_2_frame, text="", image=ordernum_2_img).pack(side='left')
 
@@ -594,7 +594,7 @@ itemNumber_2.pack(side='left', padx=(70,38))
 orderItem_3_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_3_frame.pack(anchor="nw", pady=(12, 0))  
 
-ordernum_3_img_data = Image.open("Palabok-Solo 1.png")
+ordernum_3_img_data = Image.open("resources/Palabok-Solo 1.png")
 ordernum_3_img = CTkImage(dark_image=ordernum_3_img_data, light_image=ordernum_3_img_data, size=(90, 59))
 CTkLabel(master=orderItem_3_frame, text="", image=ordernum_3_img).pack(side='left')
 
@@ -609,7 +609,7 @@ itemNumber_3.pack(side='left', padx=(70,38))
 orderItem_4_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_4_frame.pack(anchor="nw", pady=(12, 0))  
 
-ordernum_4_img_data = Image.open("Chicken-Sandwich 1.png")
+ordernum_4_img_data = Image.open("resources/Chicken-Sandwich 1.png")
 ordernum_4_img = CTkImage(dark_image=ordernum_4_img_data, light_image=ordernum_4_img_data, size=(63, 51))
 CTkLabel(master=orderItem_4_frame, text="", image=ordernum_4_img).pack(side='left', padx=(10, 0))
 
@@ -624,7 +624,7 @@ itemNumber_4.pack(side='left', padx=(70,38))
 orderItem_5_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_5_frame.pack(anchor="nw", pady=(12, 0))  
 
-ordernum_5_img_data = Image.open("Burger 1.png")
+ordernum_5_img_data = Image.open("resources/Burger 1.png")
 ordernum_5_img = CTkImage(dark_image=ordernum_5_img_data, light_image=ordernum_5_img_data, size=(90, 59))
 CTkLabel(master=orderItem_5_frame, text="", image=ordernum_5_img).pack(side='left')
 
@@ -639,7 +639,7 @@ itemNumber_5.pack(side='left', padx=(70,38))
 orderItem_6_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_6_frame.pack(anchor="nw", pady=(12, 0))  
 
-ordernum_6_img_data = Image.open("Burger-Steak 1.png")
+ordernum_6_img_data = Image.open("resources/Burger-Steak 1.png")
 ordernum_6_img = CTkImage(dark_image=ordernum_6_img_data, light_image=ordernum_6_img_data, size=(90, 59))
 CTkLabel(master=orderItem_6_frame, text="", image=ordernum_6_img).pack(side='left')
 
@@ -657,7 +657,7 @@ CTkLabel(master=orderScrollable_frame, text="Sides", text_color="#E7F3F3", ancho
 orderItem_7_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_7_frame.pack(anchor="nw", pady=(12, 0))  
 
-ordernum_7_img_data = Image.open("Fries 1.png")
+ordernum_7_img_data = Image.open("resources/Fries 1.png")
 ordernum_7_img = CTkImage(dark_image=ordernum_7_img_data, light_image=ordernum_7_img_data, size=(45, 45))
 CTkLabel(master=orderItem_7_frame, text="", image=ordernum_7_img).pack(side='left', padx=(20, 0), pady=(7, 7))
 
@@ -672,7 +672,7 @@ itemNumber_7.pack(side='left', padx=(70,38))
 orderItem_8_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_8_frame.pack(anchor="nw", pady=(20, 0))  
 
-ordernum_8_img_data = Image.open("Creamy-Macaroni Soup 1.png")
+ordernum_8_img_data = Image.open("resources/Creamy-Macaroni Soup 1.png")
 ordernum_8_img = CTkImage(dark_image=ordernum_8_img_data, light_image=ordernum_8_img_data, size=(98, 60))
 CTkLabel(master=orderItem_8_frame, text="", image=ordernum_8_img).pack(side='left')
 
@@ -687,7 +687,7 @@ itemNumber_8.pack(side='left', padx=(70,38))
 orderItem_9_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_9_frame.pack(anchor="nw", pady=(20, 0))  
 
-ordernum_9_img_data = Image.open("Plain-White-Rice 1.png")
+ordernum_9_img_data = Image.open("resources/Plain-White-Rice 1.png")
 ordernum_9_img = CTkImage(dark_image=ordernum_9_img_data, light_image=ordernum_9_img_data, size=(98, 60))
 CTkLabel(master=orderItem_9_frame, text="", image=ordernum_9_img).pack(side='left')
 
@@ -702,7 +702,7 @@ itemNumber_9.pack(side='left', padx=(70,38))
 orderItem_10_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_10_frame.pack(anchor="nw", pady=(20, 0))  
 
-ordernum_10_img_data = Image.open("Gravy 1.png")
+ordernum_10_img_data = Image.open("resources/Gravy 1.png")
 ordernum_10_img = CTkImage(dark_image=ordernum_10_img_data, light_image=ordernum_10_img_data, size=(98, 60))
 CTkLabel(master=orderItem_10_frame, text="", image=ordernum_10_img).pack(side='left')
 
@@ -720,7 +720,7 @@ CTkLabel(master=orderScrollable_frame, text="Desserts", text_color="#E7F3F3", an
 orderItem_11_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_11_frame.pack(anchor="nw", pady=(20, 0))  
 
-ordernum_11_img_data = Image.open("Peach-Mango-Pie 1.png")
+ordernum_11_img_data = Image.open("resources/Peach-Mango-Pie 1.png")
 ordernum_11_img = CTkImage(dark_image=ordernum_11_img_data, light_image=ordernum_11_img_data, size=(98, 60))
 CTkLabel(master=orderItem_11_frame, text="", image=ordernum_11_img).pack(side='left')
 
@@ -735,7 +735,7 @@ itemNumber_11.pack(side='left', padx=(70,38))
 orderItem_12_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_12_frame.pack(anchor="nw", pady=(20, 0))  
 
-ordernum_12_img_data = Image.open("Chocolate-Sundae-Twirl 1.png")
+ordernum_12_img_data = Image.open("resources/Chocolate-Sundae-Twirl 1.png")
 ordernum_12_img = CTkImage(dark_image=ordernum_12_img_data, light_image=ordernum_12_img_data, size=(98, 60))
 CTkLabel(master=orderItem_12_frame, text="", image=ordernum_12_img).pack(side='left')
 
@@ -753,7 +753,7 @@ CTkLabel(master=orderScrollable_frame, text="Beverages", text_color="#E7F3F3", a
 orderItem_13_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_13_frame.pack(anchor="nw", pady=(20, 0))  
 
-ordernum_13_img_data = Image.open("Coke-Regular 1.png")
+ordernum_13_img_data = Image.open("resources/Coke-Regular 1.png")
 ordernum_13_img = CTkImage(dark_image=ordernum_13_img_data, light_image=ordernum_13_img_data, size=(98, 60))
 CTkLabel(master=orderItem_13_frame, text="", image=ordernum_13_img).pack(side='left')
 
@@ -768,7 +768,7 @@ itemNumber_13.pack(side='left', padx=(70,38))
 orderItem_14_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_14_frame.pack(anchor="nw", pady=(20, 0))  
 
-ordernum_14_img_data = Image.open("Sprite-Regular 1.png")
+ordernum_14_img_data = Image.open("resources/Sprite-Regular 1.png")
 ordernum_14_img = CTkImage(dark_image=ordernum_14_img_data, light_image=ordernum_14_img_data, size=(98, 60))
 CTkLabel(master=orderItem_14_frame, text="", image=ordernum_14_img).pack(side='left')
 
@@ -783,7 +783,7 @@ itemNumber_14.pack(side='left', padx=(70,38))
 orderItem_15_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_15_frame.pack(anchor="nw", pady=(20, 0))  
 
-ordernum_15_img_data = Image.open("Pineapple-Juice-Regular 1.png")
+ordernum_15_img_data = Image.open("resources/Pineapple-Juice-Regular 1.png")
 ordernum_15_img = CTkImage(dark_image=ordernum_15_img_data, light_image=ordernum_15_img_data, size=(98, 60))
 CTkLabel(master=orderItem_15_frame, text="", image=ordernum_15_img).pack(side='left')
 
@@ -798,7 +798,7 @@ itemNumber_15.pack(side='left', padx=(70,38))
 orderItem_16_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_16_frame.pack(anchor="nw", pady=(20, 0))  
 
-ordernum_16_img_data = Image.open("Hot-Choco 1.png")
+ordernum_16_img_data = Image.open("resources/Hot-Choco 1.png")
 ordernum_16_img = CTkImage(dark_image=ordernum_16_img_data, light_image=ordernum_16_img_data, size=(98, 60))
 CTkLabel(master=orderItem_16_frame, text="", image=ordernum_16_img).pack(side='left')
 
@@ -813,7 +813,7 @@ itemNumber_16.pack(side='left', padx=(70,38))
 orderItem_17_frame = CTkFrame(master=orderScrollable_frame, fg_color="#191D32", width=621, height=60, corner_radius=4)
 orderItem_17_frame.pack(anchor="nw", pady=(20, 20))  
 
-ordernum_17_img_data = Image.open("Ice-Tea-Regular 1.png")
+ordernum_17_img_data = Image.open("resources/Ice-Tea-Regular 1.png")
 ordernum_17_img = CTkImage(dark_image=ordernum_17_img_data, light_image=ordernum_17_img_data, size=(98, 60))
 CTkLabel(master=orderItem_17_frame, text="", image=ordernum_17_img).pack(side='left')
 
@@ -960,7 +960,7 @@ def removeItem_17():
 
 #CHECKOUT LISTS
 #remove button
-remove_img_data = Image.open("remove.png")
+remove_img_data = Image.open("resources/remove.png")
 remove_img = CTkImage(dark_image=remove_img_data, light_image=remove_img_data, size=(18, 17))
 
 CTkLabel(master=checkoutScrollable_frame, text="Meals                                     Price               Quantity         Amount", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 17),).pack(anchor="nw", padx=(12, 0))

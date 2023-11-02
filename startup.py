@@ -13,7 +13,7 @@ customtkinter.font = ("Poppins", 12)
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue") 
 
-side_img_data = Image.open("side-img.png")
+side_img_data = Image.open("resources/side-img.png")
 
 side_img = CTkImage(dark_image=side_img_data, light_image=side_img_data, size=(300, 480))
 
@@ -28,7 +28,7 @@ login_frame.pack_propagate(0)
 login_frame.pack(expand=True, side="right")
 
 #texts
-login_label_data = Image.open("login-label.png")
+login_label_data = Image.open("resources/login-label.png")
 
 login_label = CTkImage(dark_image=login_label_data, light_image=login_label_data, size=(151, 45))
 
@@ -93,7 +93,7 @@ signup_frame = CTkFrame(master=app, width=300, height=480, fg_color="#0e1121")
 signup_frame.pack_forget()
 signup_frame.pack_propagate(0)
 
-signup_label_data = Image.open("signup-label.png")
+signup_label_data = Image.open("resources/signup-label.png")
 
 signup_label = CTkImage(dark_image=signup_label_data, light_image=signup_label_data, size=(149, 50))
 
