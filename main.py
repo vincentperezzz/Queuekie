@@ -72,6 +72,9 @@ def dashboard_command():
 
     #other functions
     show_dbtable()
+    orders_label_command()
+    delays_label_command()
+    voided_label_command()
 
 dashboard_img_data = Image.open("resources/dashboard_icon.png")
 dashboard_img = CTkImage(dark_image=dashboard_img_data, light_image=dashboard_img_data)
@@ -212,6 +215,39 @@ CTkLabel(master=dashboard_frame, text="Dashboard", text_color="#E7F3F3", anchor=
 dashbaordRectangle_frame = CTkFrame(master=dashboard_frame, fg_color="transparent", width=680, height=70, corner_radius=4)
 dashbaordRectangle_frame.pack(anchor="w", padx=(27, 0), pady=(15, 0))
 
+def orders_label_command():
+    #connect to database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+    #retrieve all the orders from the orders table and count all who have a status of 'Processing'
+    sql = "SELECT * FROM orders WHERE status = 'Processing'"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    #put the number of orders in the label
+    numoforders_NUM.configure(text=str(len(myresult)))
+
+def delays_label_command():
+    #connect to database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+    #retrieve all the orders from the orders table and count all who have a status of 'Delayed'
+    sql = "SELECT * FROM orders WHERE status = 'Delayed'"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    #put the number of orders in the label
+    numofdelays_NUM.configure(text=str(len(myresult)))
+
+def voided_label_command():
+    #connect to database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+    #retrieve all the orders from the orders table and count all who have a status of 'Voided'
+    sql = "SELECT * FROM orders WHERE status = 'Voided'"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    #put the number of orders in the label
+    numofvoided_NUM.configure(text=str(len(myresult)))
+
 # Orders Rectangle
 orders_rectangle = CTkFrame(master=dashbaordRectangle_frame, fg_color="#70179A", width=132, height=70, corner_radius=4)
 orders_rectangle.pack_propagate(False)
@@ -220,7 +256,7 @@ orders_rectangle.pack(side='left')
 numoforders_label = CTkLabel(master=orders_rectangle, text="Orders", fg_color="transparent", text_color="#fff", font=("Poppins Bold", 15), anchor="w", width=132)
 numoforders_label.pack(anchor="w", padx=(10, 0), pady=(5, 0))
 
-numoforders_NUM = CTkLabel(master=orders_rectangle, text="15", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=132)
+numoforders_NUM = CTkLabel(master=orders_rectangle, text="0", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=132)
 numoforders_NUM.pack(anchor="w" , padx=(10, 0), pady=(0, 0))
 
 # Delays Rectangle
@@ -231,7 +267,7 @@ delays_rectangle.pack(side='left', padx=(20, 0))
 numofdelays_label = CTkLabel(master=delays_rectangle, text="Delays", fg_color="transparent", text_color="#fff", font=("Poppins Bold", 15), anchor="w", width=132)
 numofdelays_label.pack(anchor="w", padx=(10, 0), pady=(5, 0))
 
-numofdelays_NUM = CTkLabel(master=delays_rectangle, text="15", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=132)
+numofdelays_NUM = CTkLabel(master=delays_rectangle, text="0", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=132)
 numofdelays_NUM.pack(anchor="w" , padx=(10, 0), pady=(0, 0))
 
 # Voided Rectangle
@@ -242,8 +278,12 @@ voided_rectangle.pack(side='left', padx=(20, 0))
 numofvoided_label = CTkLabel(master=voided_rectangle, text="Voided", fg_color="transparent", text_color="#fff", font=("Poppins Bold", 15), anchor="w", width=132)
 numofvoided_label.pack(anchor="w", padx=(10, 0), pady=(5, 0))
 
-numofvoided_NUM = CTkLabel(master=voided_rectangle, text="1", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=132)
+numofvoided_NUM = CTkLabel(master=voided_rectangle, text="0", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=132)
 numofvoided_NUM.pack(anchor="w" , padx=(10, 0), pady=(0, 0))
+
+orders_label_command()
+delays_label_command()
+voided_label_command()
 
 InQueue_dashbaordRectangle_frame = CTkFrame(master=dashboard_frame, fg_color="transparent", width=680)
 InQueue_dashbaordRectangle_frame.pack(anchor="nw", padx=(27, 0), pady=(20, 0))  
