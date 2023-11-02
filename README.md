@@ -43,4 +43,4 @@ After Installation try to run the **"startup.py"**
 
 - [@vincentperezzz](https://github.com/vincentperezzz)
 
-- [username mo Gab sa github]
+- [@doncarlos24](https://github.com/doncarlos24)
