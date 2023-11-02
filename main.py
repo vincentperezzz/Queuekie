@@ -1459,18 +1459,57 @@ dineoption.pack(side="left", padx=(10, 0), pady=(7, 7))
 payment = CTkOptionMenu(master=checkoutBottom_frame, values=["[Payment]", "E-Money", "Card", "Cash"], width=98, height=22, font=("Poppins Bold", 10), command=update_addQueue_button_state)
 payment.pack(side="left", padx=(10 ,0), pady=(7, 7))
 
+def generate_order_id():
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+
+    # Generate a new order_id
+    mycursor.execute("SELECT MAX(order_id) FROM orders")
+    result = mycursor.fetchone()
+    if result[0] is not None:
+        new_order_id = result[0] + 1
+    else:
+        new_order_id = 1001
+    return new_order_id
+
+def create_cart_entries(order_id, Total):
+    # Connect to the MySQL database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+
+    # Iterate through the 'Total' dictionary
+    for key, value in Total.items():
+        if value > 0:
+            # Extract the item code (e.g., 'TA_3' to '3')
+            item_code = int(key.split('_')[1])
+
+            # Retrieve the price from the 'menu' table
+            mycursor.execute("SELECT price FROM menu WHERE item_code = %s", (item_code,))
+            price_result = mycursor.fetchone()
+            if price_result is not None:
+                price = price_result[0]
+            else:
+                price = 0  # Handle if item not found in the menu
+
+            # Get the quantity 
+            quantity = value // price   
+
+            # Calculate the amount
+            amount = price * quantity
+
+            # Insert the data into the 'cart' table with the same new_order_id
+            sql = "INSERT INTO cart (order_id, item_code, price, quantity, amount) VALUES (%s, %s, %s, %s, %s)"
+            val = (order_id, item_code, price, quantity, amount)
+            mycursor.execute(sql, val)
+            mydb.commit()
+
+    # Close the database connection
+    mydb.close()
+
+
 def addInQueue_OrdersTable():
     try:
-        mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
-        mycursor = mydb.cursor()
-
-        # Generate a new order_id
-        mycursor.execute("SELECT MAX(order_id) FROM orders")
-        result = mycursor.fetchone()
-        if result[0] is not None:
-            new_order_id = result[0] + 1
-        else:
-            new_order_id = 1001
+        order_id = generate_order_id()
 
         # Get the current time
         current_time = datetime.now()
@@ -1486,7 +1525,7 @@ def addInQueue_OrdersTable():
 
         # Insert the new order into the "orders" table
         sql = "INSERT INTO orders (order_id, time_ordered, sales, status, time_est) VALUES (%s, %s, %s, %s, %s)"
-        val = (new_order_id, current_time, Total_Amount, status, estimated_time)
+        val = (order_id, current_time, Total_Amount, status, estimated_time)
         mycursor.execute(sql, val)
 
         mydb.commit()
@@ -1494,7 +1533,9 @@ def addInQueue_OrdersTable():
         mydb.close()
 
         #create a message box
-        CTkMessagebox(title="Info", message="New order in queue \nOrder ID: " + str(new_order_id))
+        CTkMessagebox(title="Info", message="New order in queue \nOrder ID: " + str(order_id))
+        create_cart_entries(order_id, Total)
+        
         #RESETS EVERYTHING AFTER AN ORDER
         for i in range(1, 18):
             exec(f"itemNumber_{i}.deselect()")
@@ -1508,6 +1549,7 @@ def addInQueue_OrdersTable():
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
+
 
 addQueue_button = CTkButton(master=checkoutBottom_frame, text="Add to Queue", fg_color="#158921", font=("Poppins Bold", 10), hover_color="#0A3D0F", anchor="center", width=136, height=22, command=addInQueue_OrdersTable)
 addQueue_button.pack(side='left', padx=(15, 15))
