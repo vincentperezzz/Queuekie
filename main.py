@@ -147,6 +147,8 @@ def inventory_command():
 
     #other functions
     show_InventTable()
+    completedOrdersLabel_command()
+    totalSalesLabel_command()
 
 inventory_img_data = Image.open("resources/inventory_icon.png")
 inventory_img = CTkImage(dark_image=inventory_img_data, light_image=inventory_img_data)
@@ -384,12 +386,12 @@ def show_checkoutItem_1():
         checkoutItem_1_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_1'] = amountItem_1_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_1_frame.pack_forget()
         Total['TA_1'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")  
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")  
         
 
 def show_checkoutItem_2():
@@ -398,12 +400,12 @@ def show_checkoutItem_2():
         checkoutItem_2_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_2'] = amountItem_2_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_2_frame.pack_forget()
         Total['TA_2'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def show_checkoutItem_3():
     global Total_Amount
@@ -411,12 +413,12 @@ def show_checkoutItem_3():
         checkoutItem_3_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_3'] = amountItem_3_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_3_frame.pack_forget()
         Total['TA_3'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
     
 def show_checkoutItem_4():
     global Total_Amount
@@ -424,12 +426,12 @@ def show_checkoutItem_4():
         checkoutItem_4_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_4'] = amountItem_4_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_4_frame.pack_forget()
         Total['TA_4'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_5():
     global Total_Amount
@@ -437,12 +439,12 @@ def show_checkoutItem_5():
         checkoutItem_5_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_5'] = amountItem_5_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_5_frame.pack_forget()
         Total['TA_5'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_6():
     global Total_Amount
@@ -450,12 +452,12 @@ def show_checkoutItem_6():
         checkoutItem_6_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_6'] = amountItem_6_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_6_frame.pack_forget()
         Total['TA_6'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_7():
     global Total_Amount
@@ -463,12 +465,12 @@ def show_checkoutItem_7():
         checkoutItem_7_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_7'] = amountItem_7_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_7_frame.pack_forget()
         Total['TA_7'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_8():
     global Total_Amount
@@ -476,12 +478,12 @@ def show_checkoutItem_8():
         checkoutItem_8_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_8'] = amountItem_8_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_8_frame.pack_forget()
         Total['TA_8'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_9():
     global Total_Amount
@@ -489,12 +491,12 @@ def show_checkoutItem_9():
         checkoutItem_9_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_9'] = amountItem_9_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_9_frame.pack_forget()
         Total['TA_9'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_10():
     global Total_Amount
@@ -502,96 +504,96 @@ def show_checkoutItem_10():
         checkoutItem_10_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_10'] = amountItem_10_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_10_frame.pack_forget()
         Total['TA_10'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_11():
     if itemNumber_11.get() == 1:
         checkoutItem_11_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_11'] = amountItem_11_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_11_frame.pack_forget()
         Total['TA_11'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_12():
     if itemNumber_12.get() == 1:
         checkoutItem_12_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_12'] = amountItem_12_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_12_frame.pack_forget()
         Total['TA_12'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_13():
     if itemNumber_13.get() == 1:
         checkoutItem_13_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_13'] = amountItem_13_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_13_frame.pack_forget()
         Total['TA_13'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_14():
     if itemNumber_14.get() == 1:
         checkoutItem_14_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_14'] = amountItem_14_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_14_frame.pack_forget()
         Total['TA_14'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_15():
     if itemNumber_15.get() == 1:
         checkoutItem_15_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_15'] = amountItem_15_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_15_frame.pack_forget()
         Total['TA_15'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_16():
     if itemNumber_16.get() == 1:
         checkoutItem_16_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_16'] = amountItem_16_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_16_frame.pack_forget()
         Total['TA_16'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 def show_checkoutItem_17():
     if itemNumber_17.get() == 1:
         checkoutItem_17_frame.pack(anchor="nw", pady=(12, 0))
         Total['TA_17'] = amountItem_17_val
         Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
         checkoutItem_17_frame.pack_forget()
         Total['TA_17'] = 0
         Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 
 #create a scrollable frame
@@ -884,7 +886,7 @@ def removeItem_1():
     checkoutItem_1_frame.forget()
     Total['TA_1'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_2():
     itemNumber_2.deselect()
@@ -898,105 +900,105 @@ def removeItem_3():
     checkoutItem_3_frame.forget()
     Total['TA_3'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_4():
     itemNumber_4.deselect()
     checkoutItem_4_frame.forget()
     Total['TA_4'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_5():
     itemNumber_5.deselect()
     checkoutItem_5_frame.forget()
     Total['TA_5'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_6():
     itemNumber_6.deselect()
     checkoutItem_6_frame.forget()
     Total['TA_6'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_7():
     itemNumber_7.deselect()
     checkoutItem_7_frame.forget()
     Total['TA_7'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_8():
     itemNumber_8.deselect()
     checkoutItem_8_frame.forget()
     Total['TA_8'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_9():
     itemNumber_9.deselect()
     checkoutItem_9_frame.forget()
     Total['TA_9'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_10():
     itemNumber_10.deselect()
     checkoutItem_10_frame.forget()
     Total['TA_10'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_11():
     itemNumber_11.deselect()
     checkoutItem_11_frame.forget()
     Total['TA_11'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_12():
     itemNumber_12.deselect()
     checkoutItem_12_frame.forget()
     Total['TA_12'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_13():
     itemNumber_13.deselect()
     checkoutItem_13_frame.forget()
     Total['TA_13'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_14():
     itemNumber_14.deselect()
     checkoutItem_14_frame.forget()
     Total['TA_14'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_15():
     itemNumber_15.deselect()
     checkoutItem_15_frame.forget()
     Total['TA_15'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_16():
     itemNumber_16.deselect()
     checkoutItem_16_frame.forget()
     Total['TA_16'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 def removeItem_17():
     itemNumber_17.deselect()
     checkoutItem_17_frame.forget()
     Total['TA_17'] = 0
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 #CHECKOUT LISTS
 #remove button
@@ -1018,7 +1020,7 @@ def update_amountItem_1(*args):
     amountItem_1.configure(text=amountItem_1_val)
     Total['TA_1'] = 95 * int(quantityItem_1.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_1 = customtkinter.CTkOptionMenu(master=checkoutItem_1_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_1)
 quantityItem_1.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1043,7 +1045,7 @@ def update_amountItem_2(*args):
     amountItem_2.configure(text=amountItem_2_val)
     Total['TA_2'] = 50 * int(quantityItem_2.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_2 = customtkinter.CTkOptionMenu(master=checkoutItem_2_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_2)
 quantityItem_2.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1068,7 +1070,7 @@ def update_amountItem_3(*args):
     amountItem_3.configure(text=amountItem_3_val)
     Total['TA_3'] = 160 * int(quantityItem_3.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 
 quantityItem_3 = customtkinter.CTkOptionMenu(master=checkoutItem_3_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_3)
@@ -1094,7 +1096,7 @@ def update_amountItem_4(*args):
     amountItem_4.configure(text=amountItem_4_val)
     Total['TA_4'] = 165 * int(quantityItem_4.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_4 = customtkinter.CTkOptionMenu(master=checkoutItem_4_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_4)
 quantityItem_4.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1119,7 +1121,7 @@ def update_amountItem_5(*args):
     amountItem_5.configure(text=amountItem_5_val)
     Total['TA_5'] = 50 * int(quantityItem_5.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_5 = customtkinter.CTkOptionMenu(master=checkoutItem_5_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_5)
 quantityItem_5.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1144,7 +1146,7 @@ def update_amountItem_6(*args):
     amountItem_6.configure(text=amountItem_6_val)
     Total['TA_6'] = 85 * int(quantityItem_6.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_6 = customtkinter.CTkOptionMenu(master=checkoutItem_6_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_6)
 quantityItem_6.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1169,7 +1171,7 @@ def update_amountItem_7(*args):
     amountItem_7.configure(text=amountItem_7_val)
     Total['TA_7'] = 35 * int(quantityItem_7.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_7 = customtkinter.CTkOptionMenu(master=checkoutItem_7_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_7)
 quantityItem_7.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1194,7 +1196,7 @@ def update_amountItem_8(*args):
     amountItem_8.configure(text=amountItem_8_val)
     Total['TA_8'] = 55 * int(quantityItem_8.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_8 = customtkinter.CTkOptionMenu(master=checkoutItem_8_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_8)
 quantityItem_8.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1219,7 +1221,7 @@ def update_amountItem_9(*args):
     amountItem_9.configure(text=amountItem_9_val)
     Total['TA_9'] = 20 * int(quantityItem_9.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_9 = customtkinter.CTkOptionMenu(master=checkoutItem_9_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_9)
 quantityItem_9.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1244,7 +1246,7 @@ def update_amountItem_10(*args):
     amountItem_10.configure(text=amountItem_10_val)
     Total['TA_10'] = 15 * int(quantityItem_10.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_10 = customtkinter.CTkOptionMenu(master=checkoutItem_10_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_10)
 quantityItem_10.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1269,7 +1271,7 @@ def update_amountItem_11(*args):
     amountItem_11.configure(text=amountItem_11_val)
     Total['TA_11'] = 39 * int(quantityItem_11.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_11 = customtkinter.CTkOptionMenu(master=checkoutItem_11_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_11)
 quantityItem_11.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1294,7 +1296,7 @@ def update_amountItem_12(*args):
     amountItem_12.configure(text=amountItem_12_val)
     Total['TA_12'] = 39 * int(quantityItem_12.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_12 = customtkinter.CTkOptionMenu(master=checkoutItem_12_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_12)
 quantityItem_12.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1319,7 +1321,7 @@ def update_amountItem_13(*args):
     amountItem_13.configure(text=amountItem_13_val)
     Total['TA_13'] = 35 * int(quantityItem_13.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_13 = customtkinter.CTkOptionMenu(master=checkoutItem_13_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_13)
 quantityItem_13.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1344,7 +1346,7 @@ def update_amountItem_14(*args):
     amountItem_14.configure(text=amountItem_14_val)
     Total['TA_14'] = 35 * int(quantityItem_14.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_14 = customtkinter.CTkOptionMenu(master=checkoutItem_14_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_14)
 quantityItem_14.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1369,7 +1371,7 @@ def update_amountItem_15(*args):
     amountItem_15.configure(text=amountItem_15_val)
     Total['TA_15'] = 35 * int(quantityItem_15.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_15 = customtkinter.CTkOptionMenu(master=checkoutItem_15_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_15)
 quantityItem_15.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1394,7 +1396,7 @@ def update_amountItem_16(*args):
     amountItem_16.configure(text=amountItem_16_val)
     Total['TA_16'] = 35 * int(quantityItem_16.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
 quantityItem_16 = customtkinter.CTkOptionMenu(master=checkoutItem_16_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_16)
 quantityItem_16.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1419,7 +1421,7 @@ def update_amountItem_17(*args):
     amountItem_17.configure(text=amountItem_17_val)
     Total['TA_17'] = 35 * int(quantityItem_17.get())
     Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00") 
+    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
 
 quantityItem_17 = customtkinter.CTkOptionMenu(master=checkoutItem_17_frame, values=[str(i) for i in range(1, 101)], width=50, height=22, font=("Poppins Bold", 14), command=update_amountItem_17)
 quantityItem_17.pack(side="left", padx=(68, 30), pady=(7, 7))
@@ -1441,7 +1443,7 @@ CTkLabel(master=checkoutBottom_frame, text="Total Amount: ", text_color="#E7F3F3
 def update_total_amount():  
     print(Total_Amount)
     
-totalAmount = CTkLabel(master=checkoutBottom_frame, text="₱" + str(Total_Amount) + ".00" , fg_color="#010311", text_color="#fff", anchor="w", justify="left", font=("Poppins Bold", 12), height=30, width=157, corner_radius=4)
+totalAmount = CTkLabel(master=checkoutBottom_frame, text="₱ " + str(Total_Amount) + ".00" , fg_color="#010311", text_color="#fff", anchor="w", justify="left", font=("Poppins Bold", 12), height=30, width=157, corner_radius=4)
 totalAmount.pack(side='left', padx=(5, 0), pady=(10, 10))
 
 #disable the addQueue_button until dineoption != "[Dine Type]" and payment != "[Payment]"
@@ -1499,7 +1501,7 @@ def addInQueue_OrdersTable():
             exec(f"checkoutItem_{i}_frame.forget()")
             exec(f"Total['TA_{i}'] = 0")
             Total_Amount = sum(Total.values())
-            totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
+            totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
         addQueue_button.configure(state="disabled")
         dineoption.set("[Dine Type]")
         payment.set("[Payment]")
@@ -1527,6 +1529,33 @@ CTkLabel(master=inventory_frame, text="Inventory", text_color="#E7F3F3", anchor=
 inventoryRectangle_frame = CTkFrame(master=inventory_frame, fg_color="transparent", width=680, height=70, corner_radius=4)
 inventoryRectangle_frame.pack(anchor="w", padx=(27, 0), pady=(15, 0))
 
+def completedOrdersLabel_command():
+    #connect to database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+
+    #retrieve the orders table data which only gets the status that is "Completed" and "Delayed"
+    sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE status = 'Completed' OR status = 'Delayed'"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    #count the number of completed orders and delayed orders and put it in the label
+    numofcompletedorders_NUM.configure(text=str(len(myresult)))
+
+def totalSalesLabel_command():
+    #connect to database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+
+    #retrieve the orders table data which only gets the sales
+    sql = "SELECT sales FROM orders"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    #count the number of completed orders and delayed orders and put it in the label
+    total_sales = 0
+    for sales in myresult:
+        total_sales += sales[0]
+    numoftotalSales_NUM.configure(text="₱ " + str(total_sales))
+
 # Completed Orders Rectangle
 inventoryOrders_rectangle = CTkFrame(master=inventoryRectangle_frame, fg_color="#70179A", width=201, height=70, corner_radius=4)
 inventoryOrders_rectangle.pack_propagate(False)
@@ -1535,7 +1564,7 @@ inventoryOrders_rectangle.pack(side='left')
 numofcompletedorders_label = CTkLabel(master=inventoryOrders_rectangle, text="Completed Orders", fg_color="transparent", text_color="#fff", font=("Poppins Bold", 15), anchor="w", width=201)
 numofcompletedorders_label.pack(anchor="w", padx=(10, 0), pady=(5, 0))
 
-numofcompletedorders_NUM = CTkLabel(master=inventoryOrders_rectangle, text="15", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=201)
+numofcompletedorders_NUM = CTkLabel(master=inventoryOrders_rectangle, text="₱ 0.00", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=201)
 numofcompletedorders_NUM.pack(anchor="w" , padx=(10, 0), pady=(0, 0))
 
 # Total Sales Rectangle
@@ -1546,8 +1575,11 @@ totalSales_rectangle.pack(side='left', padx=(20, 0))
 numoftotalSales_label = CTkLabel(master=totalSales_rectangle, text="Total Sales", fg_color="transparent", text_color="#fff", font=("Poppins Bold", 15), anchor="w", width=201)
 numoftotalSales_label.pack(anchor="w", padx=(10, 0), pady=(5, 0))
 
-numoftotalSales_NUM = CTkLabel(master=totalSales_rectangle, text="15", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=201)
+numoftotalSales_NUM = CTkLabel(master=totalSales_rectangle, text="0", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=201)
 numoftotalSales_NUM.pack(anchor="w" , padx=(10, 0), pady=(0, 0))
+
+completedOrdersLabel_command()
+totalSalesLabel_command()
 
 CTkLabel(master=inventory_frame, text="Order History", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 27),).pack(anchor="nw" , padx=(27, 0), pady=(20, 0))
 
