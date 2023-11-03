@@ -38,7 +38,7 @@ OS
 ```
 pip install os
 ```
-### ================= Dummy Database Initialization =================
+### ==================== Dummy Database Initialization =====================
 
 STEP 1: Open XAMPP Command Prompt or MySQL
 
@@ -48,7 +48,7 @@ STEP 3: Press Shell and paste the following: ```mysql -h localhost -u root -p```
 
 STEP 4: Copy paste the following MySql Commands-
 ```MySQL
-create database if not exists queue_system;
+create database queue_system;
 
 use queue_system;
 
