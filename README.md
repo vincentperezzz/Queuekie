@@ -107,16 +107,31 @@ Once an order begins processing, it is allowed to complete without interruption.
 **6. Result:**
 The result is a prioritized order queue where orders with shorter est-time values are processed first. In cases of equal est-time, orders that arrived earlier are given priority. This approach combines efficiency with fairness to enhance the customer experience.
 
-**Comparison with the First Come First Serve**
-let's compare the "First Come, First Serve" (FCFS) and the "Shortest Job First" (SJF) algorithms with examples to illustrate the differences.
+Comparison with the First Come First Serve let's compare the "First Come, First Serve" (FCFS) and the "Shortest Job First" (SJF) algorithms with examples to illustrate the differences.
 
-| Order | Preparation Time (est-time) | Arrival Time | FCFS Finish Time | SJF Finish Time |
-|-------|-----------------------------|--------------|------------------|-----------------|
-| 1     | 10 minutes                  | 1:00 PM      | 1:10 PM          | 1:10 PM         |
-| 2     | 12 minutes                  | 1:05 PM      | 1:22 PM          | 1:23 PM         |
-| 3     | 8 minutes                   | 1:10 PM      | 1:30 PM          | 1:18 PM         |
-| 4     | 15 minutes                  | 1:15 PM      | 1:45 PM          | 1:38 PM         |
+***Sample Data***
+| Order | Preparation Time (est-time) | Arrival Time | 
+|-------|-----------------------------|--------------|
+| 1     | 10 minutes                  | 1:00 PM      | 
+| 2     | 12 minutes                  | 1:05 PM      | 
+| 3     | 8 minutes                   | 1:10 PM      | 
+| 4     | 15 minutes                  | 1:15 PM      | 
 
+**First Come First Serve**
+| Order | Preparation Time (est-time) | Arrival Time | Finish Time |
+|-------|-----------------------------|--------------|------------|
+| 1     | 10 minutes                  | 1:00 PM      | 1:10 PM    |
+| 2     | 12 minutes                  | 1:05 PM      | 1:22 PM    |
+| 3     | 8 minutes                   | 1:10 PM      | 1:30 PM    |
+| 4     | 15 minutes                  | 1:15 PM      | 1:45 PM    |
+
+**Shortest Job First**
+| Order | Preparation Time (est-time) | Arrival Time | Finish Time |
+|-------|-----------------------------|--------------|------------|
+| 1     | 10 minutes                  | 1:00 PM      | 1:10 PM    |
+| 3     | 8 minutes                   | 1:10 PM      | 1:18 PM    |
+| 2     | 12 minutes                  | 1:05 PM      | 1:23 PM    |
+| 4     | 15 minutes                  | 1:15 PM      | 1:38 PM    |
 
 **Conclusion:**
 FCFS processes orders based on their arrival time, which can lead to longer wait times for orders with longer est-time.
