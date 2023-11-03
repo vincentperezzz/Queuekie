@@ -1598,7 +1598,7 @@ def update_addQueue_button_state(*args):
 dineoption = CTkOptionMenu(master=checkoutBottom_frame, values=["[Dine Type]", "Dine In", "Take Out", "Drive Thru"], width=98, height=22, font=("Poppins Bold", 10), command=update_addQueue_button_state)
 dineoption.pack(side="left", padx=(10, 0), pady=(7, 7))
 
-payment = CTkOptionMenu(master=checkoutBottom_frame, values=["[Payment]", "E-Money", "Card", "Cash"], width=98, height=22, font=("Poppins Bold", 10), command=update_addQueue_button_state)
+payment = CTkOptionMenu(master=checkoutBottom_frame, values=["[Payment]","Cash", "Card", "E-Money"], width=98, height=22, font=("Poppins Bold", 10), command=update_addQueue_button_state)
 payment.pack(side="left", padx=(10 ,0), pady=(7, 7))
 
 def generate_order_id():
