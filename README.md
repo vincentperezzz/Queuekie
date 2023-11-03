@@ -41,9 +41,11 @@ pip install os
 
 STEP 1: Open XAMPP Command Prompt or MySQL
 
-STEP 2: Login to the administrator user as : ```mysql -u <username> -p``` (Enter Password if asked)
+STEP 2: Start Apache and MySQL
 
-STEP 3: Copy paste the following MySql Commands-
+STEP 3: Press Shell and paste the following: ```mysql -h localhost -u root -p``` (Enter Password if you have but usually none unless modified)
+
+STEP 4: Copy paste the following MySql Commands-
 ```MySQL
 create database if not exists queue_system;
 
