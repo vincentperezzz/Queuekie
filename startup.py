@@ -10,7 +10,7 @@ app.geometry("600x480")
 app.title("Queuekie")
 app.resizable(0,0)
 customtkinter.font = ("Poppins", 12)
-customtkinter.set_appearance_mode("System")
+customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue") 
 
 side_img_data = Image.open("resources/side-img.png")

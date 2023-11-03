@@ -31,7 +31,7 @@ app.geometry("856x645")
 app.title("Queuekie - Main Menu")
 app.resizable(0,0)
 customtkinter.font = ("Poppins", 12)
-customtkinter.set_appearance_mode("System")
+customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
 
 
@@ -304,9 +304,78 @@ addorder_button.pack(side='left', padx=(355, 0))
 search_dashbaordRectangle_frame = CTkFrame(master=dashboard_frame, fg_color="#191D32", width=680)
 search_dashbaordRectangle_frame.pack(anchor="w", padx=(27, 0), pady=(10, 0))  
 
-searchORDERID_entry = CTkEntry(master=search_dashbaordRectangle_frame, width=315, placeholder_text="Enter ORDER ID", border_color="#1F6AA5", border_width=2).pack(side="left", padx=(13, 0), pady=15)
+searchORDERID_entry = CTkEntry(master=search_dashbaordRectangle_frame, width=315, placeholder_text="Enter ORDER ID", border_color="#1F6AA5", border_width=2)
+searchORDERID_entry.pack(side="left", padx=(13, 0), pady=15)
 
-vieworder_button = CTkButton(master=search_dashbaordRectangle_frame, text="View Order", fg_color="#1F6AA5", font=("Poppins Bold", 10), hover_color="#08365A", anchor="center", width=85, height=20)
+def view_order_popup():
+    viewWindow_title = "Order ID: " + searchORDERID_entry.get()
+    viewWindow = customtkinter.CTkToplevel()
+    viewWindow.geometry("610x325")
+    viewWindow.title(viewWindow_title)
+    viewWindow.attributes('-topmost', True)
+
+    viewWindow_frame = CTkFrame(master=viewWindow, fg_color="#020410",  width=610, height=325, corner_radius=0)
+    viewWindow_frame.pack(fill="both", expand=True, side="left")
+    viewWindow_frame.pack_propagate(0)
+
+    # Create a scrollable frame to contain the table
+    viewScrollable_frame = CTkScrollableFrame(master=viewWindow_frame, fg_color="transparent", width=610, height=120)
+    viewScrollable_frame.pack(anchor="w", padx=(10, 0), pady=(20, 0))
+
+    #retrieve data from database and put it in the table
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+    #retrieve the cart table data which only item_name, quantity, price, and amount
+    sql = """
+        SELECT menu.item, cart.price, cart.quantity, cart.amount 
+        FROM cart 
+        INNER JOIN menu ON cart.item_code = menu.item_code 
+        WHERE cart.order_id = %s
+    """
+    val = (searchORDERID_entry.get(),)
+    mycursor.execute(sql, val)
+    myresult = mycursor.fetchall()
+
+    #format the data to be put in the table
+    def viewtable_data(myresult, header=["Order", "Price", "Quantity", "Amount"]):
+        formatted_data = [header]
+        for item_name, price, quantity, amount in myresult:
+            formatted_data.append([item_name, price, quantity, amount])
+        return formatted_data
+
+    # Create a table using CTkTable
+    viewtable = CTkTable(master=viewScrollable_frame, values=viewtable_data(myresult), colors=["#010311", "#070b21"], header_color="#1f6aa5", hover_color="#181A27")
+    viewtable.edit_row(0, text_color="#fff", hover_color="#2A8C55")
+    viewtable.pack(expand=True)
+
+    viewBottom_frame = CTkFrame(master=viewWindow_frame, fg_color="#191D32", width=500, height=44)
+    viewBottom_frame.pack(anchor="s", padx=(0, 0), pady=(25, 0))  
+
+    CTkLabel(master=viewBottom_frame, text="Sales: ", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14),).pack(side='left', padx=(10, 0), pady=(10, 10))
+
+    def viewSales_val():
+        #sum up the amount column in the cart table where order_id = searchORDERID_entry.get()
+        mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+        mycursor = mydb.cursor()
+        sql = "SELECT SUM(amount) FROM cart WHERE order_id = %s"
+        val = (searchORDERID_entry.get(),)
+        mycursor.execute(sql, val)
+        myresult = mycursor.fetchall()
+        for x in myresult:
+            return x[0]
+        
+
+    viewSales = CTkLabel(master=viewBottom_frame, text="₱ " + str(viewSales_val()), fg_color="#010311", text_color="#fff", anchor="w", justify="left", font=("Poppins Bold", 12), height=30, width=157, corner_radius=4)
+    viewSales.pack(side='left', padx=(5, 0), pady=(10, 10))
+
+    # Create a close button
+    close_button = CTkButton(master=viewBottom_frame, text="Close", fg_color="#1F6AA5", font=("Poppins Bold", 10), hover_color="#08365A", anchor="center", width=85, height=20, command=viewWindow.destroy)
+    close_button.pack(side="right", padx=(40, 10), anchor="e")
+
+    # Start the mainloop
+    viewWindow.mainloop()
+
+vieworder_button = CTkButton(master=search_dashbaordRectangle_frame, text="View Order", fg_color="#1F6AA5", font=("Poppins Bold", 10), hover_color="#08365A", anchor="center", width=85, height=20, command = view_order_popup)
 vieworder_button.pack(side='left', padx=(10, 0))
 
 voidorder_button = CTkButton(master=search_dashbaordRectangle_frame, text="Void", fg_color="#981616", font=("Poppins Bold", 10), hover_color="#480A0A", anchor="center", width=85, height=20)
@@ -1521,7 +1590,7 @@ def addInQueue_OrdersTable():
         status = "Processing"
 
         # Define the estimated time as "N minutes"
-        estimated_time = "N minutes"
+        estimated_time = "0"
 
         # Insert the new order into the "orders" table
         sql = "INSERT INTO orders (order_id, time_ordered, sales, status, time_est) VALUES (%s, %s, %s, %s, %s)"
@@ -1535,7 +1604,7 @@ def addInQueue_OrdersTable():
         #create a message box
         CTkMessagebox(title="Info", message="New order in queue \nOrder ID: " + str(order_id))
         create_cart_entries(order_id, Total)
-        
+
         #RESETS EVERYTHING AFTER AN ORDER
         for i in range(1, 18):
             exec(f"itemNumber_{i}.deselect()")
