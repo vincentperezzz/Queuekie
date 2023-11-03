@@ -4,7 +4,7 @@ import customtkinter
 from CTkMessagebox import CTkMessagebox
 from CTkTable import CTkTable
 import mysql.connector
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 import os
 
@@ -454,21 +454,38 @@ def show_dbtable():
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
         #retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, time_est FROM orders WHERE status = %s"
+        sql = "SELECT order_id, time_ordered, time_est, time_finished FROM orders WHERE status = %s"
         val = ("Processing",)
         mycursor.execute(sql, val)
         myresult = mycursor.fetchall()
         return myresult
+    
+    def sort_result_by_time_est(results):
+        return sorted(results, key=lambda row: (get_duration_seconds(row[2]), row[1]))
 
-    def format_result_to_table_data(myresult, header=["Order ID", "Time Ordered", "Time Estimate"]):
+    def get_duration_seconds(time_est):
+        # Extract the number of minutes from the varchar time_est
+        if time_est == "Ready for Pickup":
+            return 0
+        
+        minutes = int(time_est.split()[0])
+        return minutes * 60  # Convert minutes to seconds for sorting
+
+        
+    def format_result_to_table_data(myresult, header=["Order ID", "Time Ordered", "Time Estimate", "Time Finished"]):
+        # Sort the results by time_est and time_ordered
+        myresult = sort_result_by_time_est(myresult)
+
         dbtable_data = [header]
-        for order_id, time_ordered, time_estimate in myresult:
+        for order_id, time_ordered, time_estimate, time_finished in myresult:
             formatted_time_ordered = time_ordered.strftime("%Y-%m-%d %H:%M:%S")
             formatted_time_estimate = time_estimate
-            dbtable_data.append([order_id, formatted_time_ordered, formatted_time_estimate])
+            formatted_time_finished = time_finished.strftime("%Y-%m-%d %H:%M:%S") if time_finished else None
+            dbtable_data.append([order_id, formatted_time_ordered, formatted_time_estimate, formatted_time_finished])
 
         return dbtable_data
     
+
     dbtable_data = format_result_to_table_data(retreive_data_for_database())
 
     dbtable.destroy()
@@ -1645,23 +1662,47 @@ def addInQueue_OrdersTable():
         # Define the "Processing" status
         status = "Processing"
 
-        # Define the estimated time as "N minutes"
+        # Initialize estimated_time and finished_time
         estimated_time = "0"
+        finished_time = "0"
+        highest_est_time = 0
+
+        # Find the items in the Total dictionary with quantities greater than 0
+        items_with_quantity = [item for item, quantity in Total.items() if quantity > 0]
+
+        if items_with_quantity:
+            # Extract item codes (e.g., 'TA_1' to 1) and convert them to integers
+            item_codes = [int(item.split('_')[1]) for item in items_with_quantity]
+            print(item_codes)
+
+            # Connect to the database and fetch the maximum est-time for selected items
+            mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+            mycursor = mydb.cursor()
+
+            placeholders = ', '.join(['%s'] * len(item_codes))
+            sql = f"SELECT est_time FROM menu WHERE item_code IN ({placeholders})"
+            mycursor.execute(sql, item_codes)
+            est_time_results = mycursor.fetchall()
+
+            max_est_time_result = max(result[0] for result in est_time_results)
+
+            estimated_time = str(max_est_time_result) + " minutes"
+            finished_time = current_time + timedelta(minutes=max_est_time_result)
 
         # Insert the new order into the "orders" table
-        sql = "INSERT INTO orders (order_id, time_ordered, sales, status, time_est) VALUES (%s, %s, %s, %s, %s)"
-        val = (order_id, current_time, Total_Amount, status, estimated_time)
+        sql = "INSERT INTO orders (order_id, time_ordered, sales, status, time_est, time_finished) VALUES (%s, %s, %s, %s, %s, %s)"
+        val = (order_id, current_time, Total_Amount, status, estimated_time, finished_time)
         mycursor.execute(sql, val)
 
         mydb.commit()
         mycursor.close()
         mydb.close()
 
-        #create a message box
+        # Create a message box
         CTkMessagebox(title="Info", message="New order in queue \nOrder ID: " + str(order_id))
         create_cart_entries(order_id, Total)
 
-        #RESETS EVERYTHING AFTER AN ORDER
+        # Resets everything after an order
         for i in range(1, 18):
             exec(f"itemNumber_{i}.deselect()")
             exec(f"checkoutItem_{i}_frame.forget()")
