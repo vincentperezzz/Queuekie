@@ -308,6 +308,12 @@ searchORDERID_entry = CTkEntry(master=search_dashbaordRectangle_frame, width=315
 searchORDERID_entry.pack(side="left", padx=(13, 0), pady=15)
 
 def view_order_popup():
+    #if the searchORDERID_entry.get() is empty
+    if searchORDERID_entry.get() == "":
+        #show error message
+        CTkMessagebox(title="Error", message="Please enter an order ID!", icon="cancel")
+        return
+    
     viewWindow_title = "Order ID: " + searchORDERID_entry.get()
     viewWindow = customtkinter.CTkToplevel()
     viewWindow.geometry("610x325")
@@ -378,10 +384,59 @@ def view_order_popup():
 vieworder_button = CTkButton(master=search_dashbaordRectangle_frame, text="View Order", fg_color="#1F6AA5", font=("Poppins Bold", 10), hover_color="#08365A", anchor="center", width=85, height=20, command = view_order_popup)
 vieworder_button.pack(side='left', padx=(10, 0))
 
-voidorder_button = CTkButton(master=search_dashbaordRectangle_frame, text="Void", fg_color="#981616", font=("Poppins Bold", 10), hover_color="#480A0A", anchor="center", width=85, height=20)
+def voidorder_command():
+    #if the searchORDERID_entry.get() is empty
+    if searchORDERID_entry.get() == "":
+        #show error message
+        CTkMessagebox(title="Error", message="Please enter an order ID!", icon="cancel")
+        return
+    
+    #connect to database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+    #update the status of the order to 'Voided' where order_id = searchORDERID_entry.get()
+    sql = "UPDATE orders SET status = 'Voided' WHERE order_id = %s"
+    val = (searchORDERID_entry.get(),)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    print(mycursor.rowcount, "Record Updated Succesfully.")
+    #update table
+    show_dbtable()
+    orders_label_command()
+    delays_label_command()
+    voided_label_command()
+    #show success message
+    CTkMessagebox(title="Success", message="Order has been voided!", icon="info")
+
+voidorder_button = CTkButton(master=search_dashbaordRectangle_frame, text="Void", fg_color="#981616", font=("Poppins Bold", 10), hover_color="#480A0A", anchor="center", width=85, height=20, command=voidorder_command)
 voidorder_button.pack(side='left', padx=(10, 0))
 
-doneorder_button = CTkButton(master=search_dashbaordRectangle_frame, text="Done", fg_color="#158921", font=("Poppins Bold", 10), hover_color="#0A3D0F", anchor="center", width=85, height=20)
+def doneorder_command():
+    #if the searchORDERID_entry.get() is empty
+    if searchORDERID_entry.get() == "":
+        #show error message
+        CTkMessagebox(title="Error", message="Please enter an order ID!", icon="cancel")
+        return
+    
+    #connect to database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+    #update the status of the order to 'Completed' where order_id = searchORDERID_entry.get()
+    sql = "UPDATE orders SET status = 'Completed' WHERE order_id = %s"
+    val = (searchORDERID_entry.get(),)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    print(mycursor.rowcount, "Record Updated Succesfully.")
+    #update table
+    show_dbtable()
+    orders_label_command()
+    delays_label_command()
+    voided_label_command()
+    #show success message
+    CTkMessagebox(title="Success", message="Order has been marked as done!", icon="info")
+
+
+doneorder_button = CTkButton(master=search_dashbaordRectangle_frame, text="Done", fg_color="#158921", font=("Poppins Bold", 10), hover_color="#0A3D0F", anchor="center", width=85, height=20, command=doneorder_command)
 doneorder_button.pack(side='left', padx=(10, 15))
 
 #TABLE PART
@@ -399,8 +454,9 @@ def show_dbtable():
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
         #retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, time_est FROM orders"
-        mycursor.execute(sql)
+        sql = "SELECT order_id, time_ordered, time_est FROM orders WHERE status = %s"
+        val = ("Processing",)
+        mycursor.execute(sql, val)
         myresult = mycursor.fetchall()
         return myresult
 
@@ -1657,8 +1713,8 @@ def totalSalesLabel_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
 
-    #retrieve the orders table data which only gets the sales
-    sql = "SELECT sales FROM orders"
+    #retrieve the orders table data which only gets the sales except the status that is "Voided"
+    sql = "SELECT sales FROM orders WHERE status != 'Voided'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     #count the number of completed orders and delayed orders and put it in the label
@@ -1905,6 +1961,8 @@ def resetInventory_command():
         #connect to a database and delete all the data in the orders table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
+        sql = "DELETE FROM cart"
+        mycursor.execute(sql)
         sql = "DELETE FROM orders"
         mycursor.execute(sql)
         mydb.commit()
