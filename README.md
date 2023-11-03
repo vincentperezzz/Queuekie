@@ -71,7 +71,7 @@ After Installation try to run the **"startup.py"**
 ## Algorithm Documentation
 
 ### Implementation of the Shortest Job First (SJF) Algorithm in Queue Management
-Introduction:
+**Introduction:**
 
 The Shortest Job First (SJF) algorithm is a fundamental scheduling and prioritization technique used in queue management systems to optimize order processing. It aims to reduce waiting times for customers by processing orders with the shortest estimated preparation times first. This documentation outlines the approach to implementing the SJF algorithm in a queue management system, particularly when orders have different time of arrival, and a non-preemptive approach is used.
 
