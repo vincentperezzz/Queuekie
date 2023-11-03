@@ -41,7 +41,7 @@ pip install os
 
 STEP 1: Open XAMPP Command Prompt or MySQL
 
-STEP 2: Login to the administrator user as : ```mysql -u <username> -p``` (Enter Password if asked)
+STEP 2: Login to the administrator user as : ```mysql -h localhost -u root -p``` (Enter Password if you have but usually none unless modified)
 
 STEP 3: Copy paste the following MySql Commands-
 ```MySQL
