@@ -38,7 +38,7 @@ OS
 ```
 pip install os
 ```
-### =================== Dummy Database Initialization =====================
+### ================== Dummy Database Initialization ====================
 
 STEP 1: Open XAMPP Command Prompt or MySQL
 
