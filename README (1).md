@@ -75,10 +75,10 @@ Introduction:
 
 The Shortest Job First (SJF) algorithm is a fundamental scheduling and prioritization technique used in queue management systems to optimize order processing. It aims to reduce waiting times for customers by processing orders with the shortest estimated preparation times first. This documentation outlines the approach to implementing the SJF algorithm in a queue management system, particularly when orders have different time of arrival, and a non-preemptive approach is used.
 
-1. Algorithm Overview:
+**1. Algorithm Overview:**
 The SJF algorithm focuses on the efficient processing of orders by prioritizing those with the shortest estimated preparation times (est-time). In a non-preemptive approach, once an order begins processing, it is allowed to complete without interruption. The algorithm also considers the time of order arrival to ensure fairness when est-time values are equal.
 
-2. Order Data Structure:
+**2. Order Data Structure:**
 Orders are represented as tuples containing the following attributes:
 ```
 order_id: A unique identifier for each order.
@@ -88,12 +88,12 @@ est-time: The estimated preparation time for the order.
 arrival_time: The time at which the order was placed.
 ```
 
-3. Sorting Orders:
+**3. Sorting Orders:**
 The algorithm proceeds as follows:
 Initial sorting: Orders are sorted initially by est-time in ascending order.
 Handling ties: In cases where est-time values are equal, orders are further sorted by arrival_time in ascending order.
 
-4. Estimated Finish Time Calculation:
+**4. Estimated Finish Time Calculation:**
 The estimated finish time for each order is calculated based on the est-time and the order's position in the sorted queue. The formula for calculating the estimated finish time is as follows:
 ```
 Estimated Finish Time = Arrival Time + Estimation Time
@@ -101,13 +101,13 @@ Estimated Finish Time = Arrival Time + Estimation Time
 Arrival Time is converted to minutes.
 Estimation Time is the est-time of the order.
 
-5. Non-Preemptive Processing:
+**5. Non-Preemptive Processing:**
 Once an order begins processing, it is allowed to complete without interruption. This ensures that orders are processed fairly based on their estimated preparation times while minimizing wait times.
 
-6. Result:
+**6. Result:**
 The result is a prioritized order queue where orders with shorter est-time values are processed first. In cases of equal est-time, orders that arrived earlier are given priority. This approach combines efficiency with fairness to enhance the customer experience.
 
-##Comparison with the First Come First Serve
+**Comparison with the First Come First Serve**
 let's compare the "First Come, First Serve" (FCFS) and the "Shortest Job First" (SJF) algorithms with examples to illustrate the differences.
 
 | Order | Preparation Time (est-time) | Arrival Time | FCFS Finish Time | SJF Finish Time |
@@ -118,7 +118,7 @@ let's compare the "First Come, First Serve" (FCFS) and the "Shortest Job First" 
 | 4     | 15 minutes                  | 1:15 PM      | 1:45 PM          | 1:38 PM         |
 
 
-##Conclusion:
+**Conclusion:**
 FCFS processes orders based on their arrival time, which can lead to longer wait times for orders with longer est-time.
 
 SJF prioritizes efficiency by processing orders with the shortest est-time first, reducing overall wait times.
