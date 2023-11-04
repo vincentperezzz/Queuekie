@@ -287,6 +287,20 @@ orders_label_command()
 delays_label_command()
 voided_label_command()
 
+def delays_checker_popup():
+    
+    
+    msg = CTkMessagebox(title="Notification?", message="Is this order ready?",
+                        icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+    response = msg.get()
+    
+    if response=="Yes":
+        app.destroy()
+        os.system("python startup.py")       
+    else:
+        pass
+
+
 InQueue_dashbaordRectangle_frame = CTkFrame(master=dashboard_frame, fg_color="transparent", width=680)
 InQueue_dashbaordRectangle_frame.pack(anchor="nw", padx=(27, 0), pady=(20, 0))  
 
