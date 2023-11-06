@@ -1774,7 +1774,6 @@ def addInQueue_OrdersTable():
             sql = f"SELECT est_time FROM menu WHERE item_code IN ({placeholders})"
             mycursor.execute(sql, item_codes)
             est_time_results = mycursor.fetchall()
-            print(est_time_results)
 
             max_est_time_result = max(result[0] for result in est_time_results)
 
@@ -1789,9 +1788,6 @@ def addInQueue_OrdersTable():
         mydb.commit()
         mycursor.close()
         mydb.close()
-
-        #add the new order to the queue timer
-        delays_timer_popup()
 
         # Create a message box
         CTkMessagebox(title="Info", message="New order in queue \nOrder ID: " + str(order_id))
