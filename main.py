@@ -287,19 +287,99 @@ orders_label_command()
 delays_label_command()
 voided_label_command()
 
-def delays_checker_popup():
-    
-    
-    msg = CTkMessagebox(title="Notification?", message="Is this order ready?",
-                        icon="question", option_1="Cancel", option_2="No", option_3="Yes")
-    response = msg.get()
-    
-    if response=="Yes":
-        app.destroy()
-        os.system("python startup.py")       
-    else:
-        pass
+#rerun after the delays_timer_popup() function to update the messagebox to be displayed the newly added +5 mins in the dictionary
+def update_dictionary_and_messagebox():
+    # Fetch the updated data from the database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+    sql = "SELECT Order_ID, time_finished FROM orders WHERE status = 'Processing'"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
 
+    # Update the dictionary with the new data
+    time_finished_dict = {}
+    for order_id, time_finished in myresult:
+        time_finished_dict[time_finished] = order_id
+
+    # Display the messagebox with the updated time
+    for time_finished, order_id in time_finished_dict.items():
+        msg = CTkMessagebox(title="Notification?", message=f"Is Order {order_id} ready?",
+                            icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+        response = msg.get()
+        if response=="Yes":
+            #connect to the database and change the status of the order to 'Completed' where order_id = order_id    
+            mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+            mycursor = mydb.cursor()
+            sql = "UPDATE orders SET status = 'Completed' WHERE order_id = %s"
+            val = (order_id,)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            print(mycursor.rowcount, "Record Set 'Completed' Succesfully.")
+        elif response=="No":
+            #connect to the database and change the status of the order to 'Delayed' where order_id = order_id and add 5 minutes to the time_finished
+            mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+            mycursor = mydb.cursor()
+            sql = "UPDATE orders SET status = 'Delayed', time_finished = %s WHERE order_id = %s"
+            val = (time_finished + timedelta(minutes=5), order_id)
+            #after editing the table please also update the dictionary and add the newly updated time to be displayed in the messagebox
+            time_finished_dict[time_finished + timedelta(minutes=5)] = order_id
+            update_dictionary_and_messagebox()
+            mycursor.execute(sql, val)
+            mydb.commit()
+            print(mycursor.rowcount, "Record Set 'Delayed' Succesfully.")
+        else:
+            pass
+    # Close the database connection
+    mydb.close()
+
+def delays_timer_popup():
+    # Connect to database
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+
+    # Get the time_finished and Order_ID of the orders with status 'Processing'
+    sql = "SELECT Order_ID, time_finished FROM orders WHERE status = 'Processing'"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+
+    # Put the time_finished and Order_ID in a dictionary
+    time_finished_dict = {}
+    for order_id, time_finished in myresult:
+        time_finished_dict[time_finished] = order_id
+
+    # Show a messagebox for each time_finished and Order_ID
+    for time_finished, order_id in time_finished_dict.items():
+        msg = CTkMessagebox(title="Notification?", message=f"Is Order {order_id} ready?",
+                            icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+        response = msg.get()
+        if response=="Yes":
+            #connect to the database and change the status of the order to 'Completed' where order_id = order_id    
+            mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+            mycursor = mydb.cursor()
+            sql = "UPDATE orders SET status = 'Completed' WHERE order_id = %s"
+            val = (order_id,)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            print(mycursor.rowcount, "Record Set 'Completed' Succesfully.")
+        elif response=="No":
+            #connect to the database and change the status of the order to 'Delayed' where order_id = order_id and add 5 minutes to the time_finished
+            mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+            mycursor = mydb.cursor()
+            sql = "UPDATE orders SET status = 'Delayed', time_finished = %s WHERE order_id = %s"
+            val = (time_finished + timedelta(minutes=5), order_id)
+            #after editing the table please also update the dictionary and add the newly updated time to be displayed in the messagebox
+            time_finished_dict[time_finished + timedelta(minutes=5)] = order_id
+            update_dictionary_and_messagebox()
+            mycursor.execute(sql, val)
+            mydb.commit()
+            print(mycursor.rowcount, "Record Set 'Delayed' Succesfully.")
+        else:
+            pass
+    # Close the database connection
+    mydb.close()
+
+#refresh the timer on the startup of the program
+delays_timer_popup()
 
 InQueue_dashbaordRectangle_frame = CTkFrame(master=dashboard_frame, fg_color="transparent", width=680)
 InQueue_dashbaordRectangle_frame.pack(anchor="nw", padx=(27, 0), pady=(20, 0))  
@@ -1711,6 +1791,9 @@ def addInQueue_OrdersTable():
         mydb.commit()
         mycursor.close()
         mydb.close()
+
+        #add the new order to the queue timer
+        delays_timer_popup()
 
         # Create a message box
         CTkMessagebox(title="Info", message="New order in queue \nOrder ID: " + str(order_id))
