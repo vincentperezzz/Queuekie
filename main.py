@@ -378,9 +378,6 @@ def delays_timer_popup():
     # Close the database connection
     mydb.close()
 
-#refresh the timer on the startup of the program
-delays_timer_popup()
-
 InQueue_dashbaordRectangle_frame = CTkFrame(master=dashboard_frame, fg_color="transparent", width=680)
 InQueue_dashbaordRectangle_frame.pack(anchor="nw", padx=(27, 0), pady=(20, 0))  
 
@@ -1777,6 +1774,7 @@ def addInQueue_OrdersTable():
             sql = f"SELECT est_time FROM menu WHERE item_code IN ({placeholders})"
             mycursor.execute(sql, item_codes)
             est_time_results = mycursor.fetchall()
+            print(est_time_results)
 
             max_est_time_result = max(result[0] for result in est_time_results)
 
