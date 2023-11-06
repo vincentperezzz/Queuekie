@@ -57,7 +57,7 @@ use queue_system;
 CREATE TABLE orders ( order_id INT PRIMARY KEY, time_ordered DATETIME, sales DECIMAL(10, 2), status VARCHAR(255), time_est varchar(50), time_finished DATETIME);
 ```
 ```
-CREATE TABLE menu ( item_code INT PRIMARY KEY, item VARCHAR(255), est_time VARCHAR(20), price DECIMAL(10, 2));
+CREATE TABLE menu ( item_code INT PRIMARY KEY, item VARCHAR(255), est_time int, price DECIMAL(10, 2));
 ```
 ```
 CREATE TABLE cart ( order_id INT, item_code INT, price DECIMAL(10, 2), quantity INT, amount DECIMAL(10, 2), FOREIGN KEY (order_id) REFERENCES orders(order_id), FOREIGN KEY (item_code) REFERENCES menu(item_code));
