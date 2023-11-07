@@ -223,7 +223,7 @@ def orders_label_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #retrieve all the orders from the orders table and count all who have a status of 'Processing'
-    sql = "SELECT * FROM orders WHERE status = 'Processing'"
+    sql = "SELECT * FROM orders WHERE status IN ('Processing', 'Postponed')"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
@@ -500,7 +500,6 @@ show_dbtable()
 ## The voided overdues popping out when addInQueue button is created
 
 def show_message(order_id, time_finished):
-    print("show_message() is working and it reaches the code here")
     msg = CTkMessagebox(title="Order Follow Up", message=f"Is Order {order_id} ready?",icon="question", option_1="Cancel", option_2="No", option_3="Yes")
     
     response = msg.get()
