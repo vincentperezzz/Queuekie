@@ -522,13 +522,13 @@ def show_message(order_id, time_finished):
         dashboard_command()
         
     elif response=="No":
-        # Connect to the database and change the status of the order to 'Delayed' and add 5 minutes to time_finished
+        # Connect to the database and change the status of the order to 'Postponed' and add 5 minutes to time_finished
         new_time_finished = time_finished + timedelta(minutes=5)
-        sql = "UPDATE orders SET status = 'Delayed', time_finished = %s WHERE order_id = %s"
+        sql = "UPDATE orders SET status = 'Postponed', time_finished = %s WHERE order_id = %s"
         val = (new_time_finished, order_id)
         mycursor.execute(sql, val)
         mydb.commit()
-        print(mycursor.rowcount, "Record Set 'Delayed' and added 5mins Successfully.")
+        print(mycursor.rowcount, "Record Set 'Postponed' and added 5mins Successfully.")
         # Schedule the appearance of the messagebox with the new time_finished
         delay = (new_time_finished - datetime.now()).total_seconds()
         notif = threading.Timer(delay, show_message, args=[order_id, new_time_finished])
@@ -536,6 +536,9 @@ def show_message(order_id, time_finished):
         dashboard_command()
     else:
         pass
+
+# Dictionary to store timers for each order
+timed_notif = {}
 
 def delays_popup():
     current_time = datetime.now()
@@ -552,10 +555,19 @@ def delays_popup():
         if current_time < time_finished:
             time_difference = time_finished - current_time
             seconds_to_wait = time_difference.total_seconds()
+
+            # If there's already a timer for this order, cancel it
+            if order_id in timed_notif:
+                timed_notif[order_id].cancel()
+
+            # Create a new timer and store it in the dictionary
             notif = threading.Timer(seconds_to_wait, show_message, args=[order_id, time_finished])
             notif.start()
+            timed_notif[order_id] = notif
+
             #display the timer in the console
             print(f"Order {order_id} will be ready in {seconds_to_wait} seconds.")
+            print("The current queue of timers are: ", timed_notif)
 
 def overdue_popup():
     #retrieve data from database and put it in the table
