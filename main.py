@@ -233,8 +233,8 @@ def delays_label_command():
     #connect to database
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
-    #retrieve all the orders from the orders table and count all who have a status of 'Delayed'
-    sql = "SELECT * FROM orders WHERE status = 'Delayed'"
+    #retrieve all the orders from the orders table and count all who have a status of 'Postponed'
+    sql = "SELECT * FROM orders WHERE status = 'Postponed'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
@@ -454,9 +454,9 @@ def show_dbtable():
         #retrieve data from database and put it in the table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
-        #retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, time_est, time_finished FROM orders WHERE status = %s"
-        val = ("Processing",)
+        # Retrieve the orders table data which only order_id, time_ordered, time_est
+        sql = "SELECT order_id, time_ordered, time_est, time_finished FROM orders WHERE status IN (%s, %s)"
+        val = ("Processing", "Postponed")
         mycursor.execute(sql, val)
         myresult = mycursor.fetchall()
         return myresult
@@ -464,11 +464,7 @@ def show_dbtable():
     def sort_result_by_time_est(results):
         return sorted(results, key=lambda row: (get_duration_seconds(row[2]), row[1]))
 
-    def get_duration_seconds(time_est):
-        # Extract the number of minutes from the varchar time_est
-        if time_est == "Ready for Pickup":
-            return 0
-        
+    def get_duration_seconds(time_est):   
         minutes = int(time_est.split()[0])
         return minutes * 60  # Convert minutes to seconds for sorting
 
@@ -522,13 +518,27 @@ def show_message(order_id, time_finished):
         dashboard_command()
         
     elif response=="No":
-        # Connect to the database and change the status of the order to 'Delayed' and add 5 minutes to time_finished
+        # Connect to the database and change the status of the order to 'Delayed' and add 5 minutes to time_finished and time_est
+        sql = "SELECT time_finished, time_est FROM orders WHERE order_id = %s"
+        val = (order_id,)
+        mycursor.execute(sql, val)
+        myresult = mycursor.fetchall()
+        for x in myresult:
+            time_finished = x[0]
+            time_est = x[1]
+
+        est_minutes = int(time_est.split()[0])
+        new_est_minutes = est_minutes + 5
+
+        #new set of data
         new_time_finished = time_finished + timedelta(minutes=5)
-        sql = "UPDATE orders SET status = 'Delayed', time_finished = %s WHERE order_id = %s"
-        val = (new_time_finished, order_id)
+        new_est_time = f"{new_est_minutes} minute(s)"
+
+        sql = "UPDATE orders SET status = 'Postponed', time_finished = %s, time_est = %s WHERE order_id = %s"
+        val = (new_time_finished, new_est_time, order_id)
         mycursor.execute(sql, val)
         mydb.commit()
-        print(mycursor.rowcount, "Record Set 'Delayed' and added 5mins Successfully.")
+        print(mycursor.rowcount, "Record Set 'Postponed' and added 5mins Successfully.")
         # Schedule the appearance of the messagebox with the new time_finished
         delay = (new_time_finished - datetime.now()).total_seconds()
         notif = threading.Timer(delay, show_message, args=[order_id, new_time_finished])
@@ -1773,7 +1783,7 @@ def addInQueue_OrdersTable():
 
             max_est_time_result = max(result[0] for result in est_time_results)
 
-            estimated_time = str(max_est_time_result) + " minutes"
+            estimated_time = str(max_est_time_result) + " minute(s)"
             finished_time = current_time + timedelta(minutes=max_est_time_result)
 
         # Insert the new order into the "orders" table
@@ -1832,10 +1842,10 @@ def completedOrdersLabel_command():
     mycursor = mydb.cursor()
 
     #retrieve the orders table data which only gets the status that is "Completed" and "Delayed"
-    sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE status = 'Completed' OR status = 'Delayed'"
+    sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE status = 'Completed'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
-    #count the number of completed orders and delayed orders and put it in the label
+    #count the number of completed orders orders and put it in the label
     numofcompletedorders_NUM.configure(text=str(len(myresult)))
 
 def totalSalesLabel_command():
@@ -1847,7 +1857,7 @@ def totalSalesLabel_command():
     sql = "SELECT sales FROM orders WHERE status != 'Voided'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
-    #count the number of completed orders and delayed orders and put it in the label
+    #count the number of completed orders orders and put it in the label
     total_sales = 0
     for sales in myresult:
         total_sales += sales[0]
