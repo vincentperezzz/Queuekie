@@ -26,6 +26,10 @@ Mysql-connector-python
 ```
 pip install mysql-connector-python
 ```
+Threading
+```
+pip install Threading
+```
 Datetime
 ```
 pip install datetime
