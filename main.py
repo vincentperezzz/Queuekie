@@ -440,9 +440,6 @@ def doneorder_command():
 doneorder_button = CTkButton(master=search_dashbaordRectangle_frame, text="Done", fg_color="#158921", font=("Poppins Bold", 10), hover_color="#0A3D0F", anchor="center", width=85, height=20, command=doneorder_command)
 doneorder_button.pack(side='left', padx=(10, 15))
 
-#TABLE PART
-dbtable_data = [["Order ID", "Time Ordered", "Time Estimate"]]  # Initialize with headers
-
 table_frame = CTkScrollableFrame(master=dashboard_frame, fg_color="transparent")
 table_frame.pack(expand=True, fill="both", padx=27, pady=21, side='bottom')
 
@@ -522,13 +519,13 @@ def show_message(order_id, time_finished):
         dashboard_command()
         
     elif response=="No":
-        # Connect to the database and change the status of the order to 'Postponed' and add 5 minutes to time_finished
+        # Connect to the database and change the status of the order to 'Delayed' and add 5 minutes to time_finished
         new_time_finished = time_finished + timedelta(minutes=5)
-        sql = "UPDATE orders SET status = 'Postponed', time_finished = %s WHERE order_id = %s"
+        sql = "UPDATE orders SET status = 'Delayed', time_finished = %s WHERE order_id = %s"
         val = (new_time_finished, order_id)
         mycursor.execute(sql, val)
         mydb.commit()
-        print(mycursor.rowcount, "Record Set 'Postponed' and added 5mins Successfully.")
+        print(mycursor.rowcount, "Record Set 'Delayed' and added 5mins Successfully.")
         # Schedule the appearance of the messagebox with the new time_finished
         delay = (new_time_finished - datetime.now()).total_seconds()
         notif = threading.Timer(delay, show_message, args=[order_id, new_time_finished])
