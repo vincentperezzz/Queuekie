@@ -440,6 +440,9 @@ def doneorder_command():
 doneorder_button = CTkButton(master=search_dashbaordRectangle_frame, text="Done", fg_color="#158921", font=("Poppins Bold", 10), hover_color="#0A3D0F", anchor="center", width=85, height=20, command=doneorder_command)
 doneorder_button.pack(side='left', padx=(10, 15))
 
+#TABLE PART
+dbtable_data = [["Order ID", "Time Ordered", "Time Estimate"]]  # Initialize with headers
+
 table_frame = CTkScrollableFrame(master=dashboard_frame, fg_color="transparent")
 table_frame.pack(expand=True, fill="both", padx=27, pady=21, side='bottom')
 
