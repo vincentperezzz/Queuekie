@@ -5,6 +5,7 @@ from CTkMessagebox import CTkMessagebox
 from CTkTable import CTkTable
 import mysql.connector
 from datetime import datetime, timedelta
+import threading
 import time
 import os
 
@@ -222,7 +223,7 @@ def orders_label_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #retrieve all the orders from the orders table and count all who have a status of 'Processing'
-    sql = "SELECT * FROM orders WHERE status = 'Processing'"
+    sql = "SELECT * FROM orders WHERE status IN ('Processing', 'Postponed')"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
@@ -232,8 +233,8 @@ def delays_label_command():
     #connect to database
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
-    #retrieve all the orders from the orders table and count all who have a status of 'Delayed'
-    sql = "SELECT * FROM orders WHERE status = 'Delayed'"
+    #retrieve all the orders from the orders table and count all who have a status of 'Postponed'
+    sql = "SELECT * FROM orders WHERE status = 'Postponed'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
@@ -453,9 +454,9 @@ def show_dbtable():
         #retrieve data from database and put it in the table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
-        #retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, time_est, time_finished FROM orders WHERE status = %s"
-        val = ("Processing",)
+        # Retrieve the orders table data which only order_id, time_ordered, time_est
+        sql = "SELECT order_id, time_ordered, time_est, time_finished FROM orders WHERE status IN (%s, %s)"
+        val = ("Processing", "Postponed")
         mycursor.execute(sql, val)
         myresult = mycursor.fetchall()
         return myresult
@@ -463,11 +464,7 @@ def show_dbtable():
     def sort_result_by_time_est(results):
         return sorted(results, key=lambda row: (get_duration_seconds(row[2]), row[1]))
 
-    def get_duration_seconds(time_est):
-        # Extract the number of minutes from the varchar time_est
-        if time_est == "Ready for Pickup":
-            return 0
-        
+    def get_duration_seconds(time_est):   
         minutes = int(time_est.split()[0])
         return minutes * 60  # Convert minutes to seconds for sorting
 
@@ -499,6 +496,105 @@ dbtable.edit_row(0, text_color="#fff", hover_color="#2A8C55")
 dbtable.pack(expand=True)
 
 show_dbtable()
+
+## The voided overdues popping out when addInQueue button is created
+
+def show_message(order_id, time_finished):
+    msg = CTkMessagebox(title="Order Follow Up", message=f"Is Order {order_id} ready?",icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+    
+    response = msg.get()
+    #retrieve data from database and put it in the table
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()
+    
+    if response=="Yes":
+        # Connect to the database and change the status of the order to 'Completed' where order_id = order_id
+        sql = "UPDATE orders SET status = 'Completed' WHERE order_id = %s"
+        val = (order_id,)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        print(mycursor.rowcount, "Record Set 'Completed' Successfully.")
+        dashboard_command()
+        
+    elif response=="No":
+        # Connect to the database and change the status of the order to 'Delayed' and add 5 minutes to time_finished and time_est
+        sql = "SELECT time_finished, time_est FROM orders WHERE order_id = %s"
+        val = (order_id,)
+        mycursor.execute(sql, val)
+        myresult = mycursor.fetchall()
+        for x in myresult:
+            time_finished = x[0]
+            time_est = x[1]
+
+        est_minutes = int(time_est.split()[0])
+        new_est_minutes = est_minutes + 5
+
+        #new set of data
+        new_time_finished = time_finished + timedelta(minutes=5)
+        new_est_time = f"{new_est_minutes} minute(s)"
+
+        sql = "UPDATE orders SET status = 'Postponed', time_finished = %s, time_est = %s WHERE order_id = %s"
+        val = (new_time_finished, new_est_time, order_id)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        print(mycursor.rowcount, "Record Set 'Postponed' and added 5mins Successfully.")
+        # Schedule the appearance of the messagebox with the new time_finished
+        delay = (new_time_finished - datetime.now()).total_seconds()
+        notif = threading.Timer(delay, show_message, args=[order_id, new_time_finished])
+        notif.start()
+        dashboard_command()
+    else:
+        pass
+
+# Dictionary to store timers for each order
+timed_notif = {}
+
+def delays_popup():
+    current_time = datetime.now()
+
+    #retrieve data from database and put it in the table
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()    
+    # Query to retrieve orders with 'Processing' status
+    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing'"
+    mycursor.execute(sql)
+    processing_orders = mycursor.fetchall()
+
+    for order_id, time_finished in processing_orders:
+        if current_time < time_finished:
+            time_difference = time_finished - current_time
+            seconds_to_wait = time_difference.total_seconds()
+
+            # If there's already a timer for this order, cancel it
+            if order_id in timed_notif:
+                timed_notif[order_id].cancel()
+
+            # Create a new timer and store it in the dictionary
+            notif = threading.Timer(seconds_to_wait, show_message, args=[order_id, time_finished])
+            notif.start()
+            timed_notif[order_id] = notif
+
+            #display the timer in the console
+            print(f"Order {order_id} will be ready in {seconds_to_wait} seconds.")
+            print("The current queue of timers are: ", timed_notif)
+
+def overdue_popup():
+    #retrieve data from database and put it in the table
+    mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+    mycursor = mydb.cursor()    
+    # Query to retrieve orders with 'Processing' status
+    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing'"
+    mycursor.execute(sql)
+    processing_orders = mycursor.fetchall()
+    for order_id, time_finished in processing_orders:
+        # Handle overdue orders as needed
+        # show info ctkmessagebox that says the order is overdue
+        CTkMessagebox(title="Order Follow Up", message=f"Order {order_id} is overdue!", icon="info")
+        show_dbtable()
+        orders_label_command()
+            
+delays_popup()
+overdue_popup() #runs only on startup
 
 #################################################################################
 #Order Frame
@@ -1650,6 +1746,7 @@ def create_cart_entries(order_id, Total):
 
 
 def addInQueue_OrdersTable():
+    print("addInQueue Button Pressed")
     try:
         order_id = generate_order_id()
 
@@ -1673,7 +1770,6 @@ def addInQueue_OrdersTable():
         if items_with_quantity:
             # Extract item codes (e.g., 'TA_1' to 1) and convert them to integers
             item_codes = [int(item.split('_')[1]) for item in items_with_quantity]
-            print(item_codes)
 
             # Connect to the database and fetch the maximum est-time for selected items
             mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
@@ -1686,21 +1782,23 @@ def addInQueue_OrdersTable():
 
             max_est_time_result = max(result[0] for result in est_time_results)
 
-            estimated_time = str(max_est_time_result) + " minutes"
+            estimated_time = str(max_est_time_result) + " minute(s)"
             finished_time = current_time + timedelta(minutes=max_est_time_result)
 
         # Insert the new order into the "orders" table
         sql = "INSERT INTO orders (order_id, time_ordered, sales, status, time_est, time_finished) VALUES (%s, %s, %s, %s, %s, %s)"
         val = (order_id, current_time, Total_Amount, status, estimated_time, finished_time)
         mycursor.execute(sql, val)
-
         mydb.commit()
+
         mycursor.close()
         mydb.close()
 
         # Create a message box
         CTkMessagebox(title="Info", message="New order in queue \nOrder ID: " + str(order_id))
         create_cart_entries(order_id, Total)
+
+        delays_popup()
 
         # Resets everything after an order
         for i in range(1, 18):
@@ -1743,10 +1841,10 @@ def completedOrdersLabel_command():
     mycursor = mydb.cursor()
 
     #retrieve the orders table data which only gets the status that is "Completed" and "Delayed"
-    sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE status = 'Completed' OR status = 'Delayed'"
+    sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE status = 'Completed'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
-    #count the number of completed orders and delayed orders and put it in the label
+    #count the number of completed orders orders and put it in the label
     numofcompletedorders_NUM.configure(text=str(len(myresult)))
 
 def totalSalesLabel_command():
@@ -1758,7 +1856,7 @@ def totalSalesLabel_command():
     sql = "SELECT sales FROM orders WHERE status != 'Voided'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
-    #count the number of completed orders and delayed orders and put it in the label
+    #count the number of completed orders orders and put it in the label
     total_sales = 0
     for sales in myresult:
         total_sales += sales[0]
