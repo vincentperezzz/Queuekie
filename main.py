@@ -225,7 +225,7 @@ def orders_label_command():
     #retrieve all the orders from the orders table and count all who have a status of 'Processing'
     sql = "SELECT * FROM orders WHERE status IN ('Processing', 'Postponed') AND employee_ID = %s"
     val = (loggedin_employee_id,)
-    mycursor.execute(sql)
+    mycursor.execute(sql, val)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
     numoforders_NUM.configure(text=str(len(myresult)))
@@ -237,7 +237,7 @@ def delays_label_command():
     #retrieve all the orders from the orders table and count all who have a status of 'Postponed'
     sql = "SELECT * FROM orders WHERE status = 'Postponed' AND employee_ID = %s"
     val = (loggedin_employee_id,)
-    mycursor.execute(sql)
+    mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
     numofdelays_NUM.configure(text=str(len(myresult)))
@@ -249,7 +249,7 @@ def voided_label_command():
     #retrieve all the orders from the orders table and count all who have a status of 'Voided'
     sql = "SELECT * FROM orders WHERE status = 'Voided' AND employee_ID = %s"
     val = (loggedin_employee_id,)
-    mycursor.execute(sql)
+    mycursor.execute(sql, val)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
     numofvoided_NUM.configure(text=str(len(myresult)))
