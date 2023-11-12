@@ -593,10 +593,11 @@ def overdue_popup():
     processing_orders = mycursor.fetchall()
     for order_id, time_finished in processing_orders:
         # Handle overdue orders as needed
-        # show info ctkmessagebox that says the order is overdue
-        CTkMessagebox(title="Order Follow Up", message=f"Order {order_id} is overdue!", icon="info")
-        show_dbtable()
-        orders_label_command()
+        if time_finished < datetime.datetime.now():
+            # show info ctkmessagebox that says the order is overdue
+            CTkMessagebox(title="Order Follow Up", message=f"Order {order_id} is overdue!", icon="info")
+    show_dbtable()
+    orders_label_command()
             
 delays_popup()
 overdue_popup() #runs only on startup
@@ -2149,6 +2150,8 @@ def resetHistory_command():
         mydb.commit()
         mycursor.close()
         mydb.close()
+
+        #reset all the delayed notification
         #create a message box
         CTkMessagebox(title="Info", message="History has been reset!")
     else:
