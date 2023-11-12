@@ -2108,14 +2108,22 @@ def resetHistory_command():
         #connect to a database and delete all the data in the orders table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
-        sql = """
+
+        # Delete from cart table
+        sql_cart = """
             DELETE FROM cart 
             WHERE order_id IN (
                 SELECT order_id FROM orders WHERE employee_ID = %s
             )
         """
         val = (loggedin_employee_id,)
-        mycursor.execute(sql, val)
+        mycursor.execute(sql_cart, val)
+
+        # Delete from orders table
+        sql_orders = "DELETE FROM orders WHERE employee_ID = %s"
+        mycursor.execute(sql_orders, val)
+
+        mydb.commit()
         mydb.commit()
         mycursor.close()
         mydb.close()
