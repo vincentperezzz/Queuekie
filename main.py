@@ -151,7 +151,7 @@ def History_command():
     completedOrdersLabel_command()
     totalSalesLabel_command()
 
-History_img_data = Image.open("resources/History_icon.png")
+History_img_data = Image.open("resources/history_icon.png")
 History_img = CTkImage(dark_image=History_img_data, light_image=History_img_data)
 History_button = CTkButton(master=sidebar_frame, image=History_img, text="History", fg_color="transparent", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=History_command)
 History_button.pack(anchor="center", pady=(10, 0))
