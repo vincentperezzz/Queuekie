@@ -13,9 +13,11 @@ using pip installation command
 Customtkinter	
 ```
 pip install customtkinter
-
+```
+```
 pip install CTkTable
-
+```
+```
 pip install CTkMessagebox
 ```
 PIL	
