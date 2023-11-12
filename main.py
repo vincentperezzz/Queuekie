@@ -1896,7 +1896,10 @@ totalSalesLabel_command()
 
 CTkLabel(master=History_frame, text="Order History", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 27),).pack(anchor="nw" , padx=(27, 0), pady=(20, 0))
 
-InventTable_data = [["Order ID", "Time Ordered", "Sales", "Status"]]  # Initialize with headers
+if loggedin_employee_id == "admin":
+    InventTable_data = [["Order ID", "Time Ordered", "Sales", "Status", "Employee ID"]]  # Initialize with headers
+else:
+    InventTable_data = [["Order ID", "Time Ordered", "Sales", "Status"]]  # Initialize with headers
 
 InventTable_frame = CTkScrollableFrame(master=History_frame, fg_color="transparent")
 InventTable_frame.pack(expand=True, fill="both", padx=27, pady=21, side='bottom')
@@ -1909,12 +1912,20 @@ def show_InventTable():
         #retrieve data from database and put it in the table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
-        #retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE employee_ID = %s"
-        val = (loggedin_employee_id,)
-        mycursor.execute(sql, val)
-        myresult = mycursor.fetchall()
-        return myresult
+        #if the logged in employee is admin, retrieve all the data from the orders table
+        if loggedin_employee_id == "admin":
+            sql = "SELECT order_id, time_ordered, sales, status, employee_ID FROM orders"
+            mycursor.execute(sql)
+            myresult = mycursor.fetchall()
+            return myresult
+        #if the logged in employee is not admin, retrieve only the data from the orders table that has the same employee_ID as the logged in employee
+        else:
+            #retrieve the orders table data which only order_id, time_ordered, time_est
+            sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE employee_ID = %s"
+            val = (loggedin_employee_id,)
+            mycursor.execute(sql, val)
+            myresult = mycursor.fetchall()
+            return myresult
 
     def format_result_to_table_data(myresult, header=["Order ID", "Time Ordered", "Sales", "Status"]):
         InventTable_data = [header]
@@ -1923,8 +1934,19 @@ def show_InventTable():
             InventTable_data.append([order_id, formatted_time_ordered, sales, status])
 
         return InventTable_data
+
+    def format_result_to_table_data_admin(myresult, header=["Order ID", "Time Ordered", "Sales", "Status", "Employee ID"]):
+        InventTable_data = [header]
+        for order_id, time_ordered, sales, status, employee_ID in myresult:
+            formatted_time_ordered = time_ordered.strftime("%Y-%m-%d %H:%M:%S")
+            InventTable_data.append([order_id, formatted_time_ordered, sales, status, employee_ID])
+
+        return InventTable_data
     
-    InventTable_data = format_result_to_table_data(retreive_data_for_database())
+    if loggedin_employee_id == "admin":
+        InventTable_data = format_result_to_table_data_admin(retreive_data_for_database())
+    else:
+        InventTable_data = format_result_to_table_data(retreive_data_for_database())
 
     InventTable.destroy()
 
