@@ -223,7 +223,8 @@ def orders_label_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #retrieve all the orders from the orders table and count all who have a status of 'Processing'
-    sql = "SELECT * FROM orders WHERE status IN ('Processing', 'Postponed')"
+    sql = "SELECT * FROM orders WHERE status IN ('Processing', 'Postponed') AND employee_ID = %s"
+    val = (loggedin_employee_id,)
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
@@ -234,7 +235,8 @@ def delays_label_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #retrieve all the orders from the orders table and count all who have a status of 'Postponed'
-    sql = "SELECT * FROM orders WHERE status = 'Postponed'"
+    sql = "SELECT * FROM orders WHERE status = 'Postponed' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
@@ -245,7 +247,8 @@ def voided_label_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #retrieve all the orders from the orders table and count all who have a status of 'Voided'
-    sql = "SELECT * FROM orders WHERE status = 'Voided'"
+    sql = "SELECT * FROM orders WHERE status = 'Voided' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
@@ -396,8 +399,8 @@ def voidorder_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #update the status of the order to 'Voided' where order_id = searchORDERID_entry.get()
-    sql = "UPDATE orders SET status = 'Voided' WHERE order_id = %s"
-    val = (searchORDERID_entry.get(),)
+    sql = "UPDATE orders SET status = 'Voided' WHERE order_id = %s AND employee_ID = %s"
+    val = (searchORDERID_entry.get(), loggedin_employee_id)
     mycursor.execute(sql, val)
     mydb.commit()
     print(mycursor.rowcount, "Record Updated Succesfully.")
@@ -455,8 +458,8 @@ def show_dbtable():
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
         # Retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, time_est, time_finished FROM orders WHERE status IN (%s, %s)"
-        val = ("Processing", "Postponed")
+        sql = "SELECT order_id, time_ordered, time_est, time_finished FROM orders WHERE status IN (%s, %s) AND employee_ID = %s"
+        val = ("Processing", "Postponed", loggedin_employee_id)
         mycursor.execute(sql, val)
         myresult = mycursor.fetchall()
         return myresult
@@ -556,8 +559,9 @@ def delays_popup():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()    
     # Query to retrieve orders with 'Processing' status
-    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing'"
-    mycursor.execute(sql)
+    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     processing_orders = mycursor.fetchall()
 
     for order_id, time_finished in processing_orders:
@@ -583,8 +587,9 @@ def overdue_popup():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()    
     # Query to retrieve orders with 'Processing' status
-    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing'"
-    mycursor.execute(sql)
+    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     processing_orders = mycursor.fetchall()
     for order_id, time_finished in processing_orders:
         # Handle overdue orders as needed
@@ -1786,8 +1791,8 @@ def addInQueue_OrdersTable():
             finished_time = current_time + timedelta(minutes=max_est_time_result)
 
         # Insert the new order into the "orders" table
-        sql = "INSERT INTO orders (order_id, time_ordered, sales, status, time_est, time_finished) VALUES (%s, %s, %s, %s, %s, %s)"
-        val = (order_id, current_time, Total_Amount, status, estimated_time, finished_time)
+        sql = "INSERT INTO orders (order_id, time_ordered, sales, status, time_est, time_finished, employee_ID) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        val = (order_id, current_time, Total_Amount, status, estimated_time, finished_time, loggedin_employee_id)
         mycursor.execute(sql, val)
         mydb.commit()
 
@@ -1841,8 +1846,9 @@ def completedOrdersLabel_command():
     mycursor = mydb.cursor()
 
     #retrieve the orders table data which only gets the status that is "Completed" and "Delayed"
-    sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE status = 'Completed'"
-    mycursor.execute(sql)
+    sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE status = 'Completed' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     myresult = mycursor.fetchall()
     #count the number of completed orders orders and put it in the label
     numofcompletedorders_NUM.configure(text=str(len(myresult)))
@@ -1853,8 +1859,9 @@ def totalSalesLabel_command():
     mycursor = mydb.cursor()
 
     #retrieve the orders table data which only gets the sales except the status that is "Voided"
-    sql = "SELECT sales FROM orders WHERE status != 'Voided'"
-    mycursor.execute(sql)
+    sql = "SELECT sales FROM orders WHERE status != 'Voided' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     myresult = mycursor.fetchall()
     #count the number of completed orders orders and put it in the label
     total_sales = 0
@@ -1903,8 +1910,9 @@ def show_InventTable():
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
         #retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, sales, status FROM orders"
-        mycursor.execute(sql)
+        sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE employee_ID = %s"
+        val = (loggedin_employee_id,)
+        mycursor.execute(sql, val)
         myresult = mycursor.fetchall()
         return myresult
 
