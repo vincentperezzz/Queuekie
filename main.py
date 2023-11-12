@@ -2126,7 +2126,7 @@ def resetHistory_command():
 
 def ADMINresetHistory_command():
     # get yes/no answers
-    msg = CTkMessagebox(title="RESET ALL USERS History?", message="Do you want to reset the \nENTIRE History?", icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+    msg = CTkMessagebox(title="RESET ALL USERS HISTORY?", message="Do you want to reset the \nENTIRE History?", icon="question", option_1="Cancel", option_2="No", option_3="Yes")
     response = msg.get()
     
     if response=="Yes":
