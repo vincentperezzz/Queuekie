@@ -404,6 +404,10 @@ def voidorder_command():
     mycursor.execute(sql, val)
     mydb.commit()
     print(mycursor.rowcount, "Record Updated Succesfully.")
+    #cancel timers for the order where order_id = searchORDERID_entry.get()
+    if searchORDERID_entry.get() in timed_notif:
+        timed_notif[searchORDERID_entry.get()].cancel()
+        del timed_notif[searchORDERID_entry.get()]
     #update table
     show_dbtable()
     orders_label_command()
@@ -593,10 +597,11 @@ def overdue_popup():
     processing_orders = mycursor.fetchall()
     for order_id, time_finished in processing_orders:
         # Handle overdue orders as needed
-        # show info ctkmessagebox that says the order is overdue
-        CTkMessagebox(title="Order Follow Up", message=f"Order {order_id} is overdue!", icon="info")
-        show_dbtable()
-        orders_label_command()
+        if time_finished < datetime.datetime.now():
+            # show info ctkmessagebox that says the order is overdue
+            CTkMessagebox(title="Order Follow Up", message=f"Order {order_id} is overdue!", icon="info")
+    show_dbtable()
+    orders_label_command()
             
 delays_popup()
 overdue_popup() #runs only on startup
@@ -623,221 +628,18 @@ global Total_Amount
 Total = {'TA_1': 0, 'TA_2': 0, 'TA_3': 0, 'TA_4': 0, 'TA_5': 0, 'TA_6': 0, 'TA_7': 0, 'TA_8': 0, 'TA_9': 0, 'TA_10': 0, 'TA_11': 0, 'TA_12': 0, 'TA_13': 0, 'TA_14': 0, 'TA_15': 0, 'TA_16': 0, 'TA_17': 0}
 Total_Amount = sum(Total.values())
 
-def show_checkoutItem_1():
+def show_checkoutItem(item_number, frame, amount_val):
     global Total_Amount
-    if itemNumber_1.get() == 1:
-        checkoutItem_1_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_1'] = amountItem_1_val
+    if globals()[f'itemNumber_{item_number}'].get() == 1:
+        frame.pack(anchor="nw", pady=(12, 0))
+        Total[f'TA_{item_number}'] = amount_val
         Total_Amount = sum(Total.values())  
         totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
     else:
-        checkoutItem_1_frame.pack_forget()
-        Total['TA_1'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")  
-        
-
-def show_checkoutItem_2():
-    global Total_Amount
-    if itemNumber_2.get() == 1:
-        checkoutItem_2_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_2'] = amountItem_2_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_2_frame.pack_forget()
-        Total['TA_2'] = 0
+        frame.pack_forget()
+        Total[f'TA_{item_number}'] = 0
         Total_Amount = sum(Total.values())
         totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def show_checkoutItem_3():
-    global Total_Amount
-    if itemNumber_3.get() == 1:
-        checkoutItem_3_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_3'] = amountItem_3_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_3_frame.pack_forget()
-        Total['TA_3'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-    
-def show_checkoutItem_4():
-    global Total_Amount
-    if itemNumber_4.get() == 1:
-        checkoutItem_4_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_4'] = amountItem_4_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_4_frame.pack_forget()
-        Total['TA_4'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_5():
-    global Total_Amount
-    if itemNumber_5.get() == 1:
-        checkoutItem_5_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_5'] = amountItem_5_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_5_frame.pack_forget()
-        Total['TA_5'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_6():
-    global Total_Amount
-    if itemNumber_6.get() == 1:
-        checkoutItem_6_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_6'] = amountItem_6_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_6_frame.pack_forget()
-        Total['TA_6'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_7():
-    global Total_Amount
-    if itemNumber_7.get() == 1:
-        checkoutItem_7_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_7'] = amountItem_7_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_7_frame.pack_forget()
-        Total['TA_7'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_8():
-    global Total_Amount
-    if itemNumber_8.get() == 1:
-        checkoutItem_8_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_8'] = amountItem_8_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_8_frame.pack_forget()
-        Total['TA_8'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_9():
-    global Total_Amount
-    if itemNumber_9.get() == 1:
-        checkoutItem_9_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_9'] = amountItem_9_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_9_frame.pack_forget()
-        Total['TA_9'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_10():
-    global Total_Amount
-    if itemNumber_10.get() == 1:
-        checkoutItem_10_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_10'] = amountItem_10_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_10_frame.pack_forget()
-        Total['TA_10'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_11():
-    if itemNumber_11.get() == 1:
-        checkoutItem_11_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_11'] = amountItem_11_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_11_frame.pack_forget()
-        Total['TA_11'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_12():
-    if itemNumber_12.get() == 1:
-        checkoutItem_12_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_12'] = amountItem_12_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_12_frame.pack_forget()
-        Total['TA_12'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_13():
-    if itemNumber_13.get() == 1:
-        checkoutItem_13_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_13'] = amountItem_13_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_13_frame.pack_forget()
-        Total['TA_13'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_14():
-    if itemNumber_14.get() == 1:
-        checkoutItem_14_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_14'] = amountItem_14_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_14_frame.pack_forget()
-        Total['TA_14'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_15():
-    if itemNumber_15.get() == 1:
-        checkoutItem_15_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_15'] = amountItem_15_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_15_frame.pack_forget()
-        Total['TA_15'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_16():
-    if itemNumber_16.get() == 1:
-        checkoutItem_16_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_16'] = amountItem_16_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_16_frame.pack_forget()
-        Total['TA_16'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
-def show_checkoutItem_17():
-    if itemNumber_17.get() == 1:
-        checkoutItem_17_frame.pack(anchor="nw", pady=(12, 0))
-        Total['TA_17'] = amountItem_17_val
-        Total_Amount = sum(Total.values())  
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-    else:
-        checkoutItem_17_frame.pack_forget()
-        Total['TA_17'] = 0
-        Total_Amount = sum(Total.values())
-        totalAmount.configure(text="₱ " + str(Total_Amount) + ".00") 
-
 
 #create a scrollable frame
 orderScrollable_frame = CTkScrollableFrame(master=order_frame, fg_color="transparent", width=621, height=500)
@@ -857,7 +659,7 @@ CTkLabel(master=orderItem_1_frame, text="Fried Chicken w/ Rice", text_color="#E7
 
 CTkLabel(master=orderItem_1_frame, text="₱ 95.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(105, 0))
 
-itemNumber_1 = customtkinter.CTkCheckBox(master=orderItem_1_frame, text="", width=20, command=show_checkoutItem_1)
+itemNumber_1 = customtkinter.CTkCheckBox(master=orderItem_1_frame, text="", width=20, command=lambda: show_checkoutItem(1, checkoutItem_1_frame, amountItem_1_val))
 itemNumber_1.pack(side='left', padx=(70,38))
 
 #Item Number 2
@@ -872,7 +674,7 @@ CTkLabel(master=orderItem_2_frame, text="Jolly Spaghetti", text_color="#E7F3F3",
 
 CTkLabel(master=orderItem_2_frame, text="₱ 50.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(165, 0))
 
-itemNumber_2 = customtkinter.CTkCheckBox(master=orderItem_2_frame, text="", width=20, command=show_checkoutItem_2)
+itemNumber_2 = customtkinter.CTkCheckBox(master=orderItem_2_frame, text="", width=20, command=lambda: show_checkoutItem(2, checkoutItem_2_frame, amountItem_2_val))
 itemNumber_2.pack(side='left', padx=(70,38))
 
 #Item Number 3
@@ -887,7 +689,7 @@ CTkLabel(master=orderItem_3_frame, text="Palabok Fiesta", text_color="#E7F3F3", 
 
 CTkLabel(master=orderItem_3_frame, text="₱ 160.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(162, 0))
 
-itemNumber_3 = customtkinter.CTkCheckBox(master=orderItem_3_frame, text="", width=20, command=show_checkoutItem_3)
+itemNumber_3 = customtkinter.CTkCheckBox(master=orderItem_3_frame, text="", width=20, command=lambda: show_checkoutItem(3, checkoutItem_3_frame, amountItem_3_val))
 itemNumber_3.pack(side='left', padx=(70,38))
 
 #Item Number 4
@@ -902,7 +704,7 @@ CTkLabel(master=orderItem_4_frame, text="Chicken Sandwich", text_color="#E7F3F3"
 
 CTkLabel(master=orderItem_4_frame, text="₱ 65.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(132, 0))
 
-itemNumber_4 = customtkinter.CTkCheckBox(master=orderItem_4_frame, text="", width=20, command=show_checkoutItem_4)
+itemNumber_4 = customtkinter.CTkCheckBox(master=orderItem_4_frame, text="", width=20, command=lambda: show_checkoutItem(4, checkoutItem_4_frame, amountItem_4_val))
 itemNumber_4.pack(side='left', padx=(70,38))
 
 #Item Number 5
@@ -917,7 +719,7 @@ CTkLabel(master=orderItem_5_frame, text="Burger", text_color="#E7F3F3", anchor="
 
 CTkLabel(master=orderItem_5_frame, text="₱ 50.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(246, 0))
 
-itemNumber_5 = customtkinter.CTkCheckBox(master=orderItem_5_frame, text="", width=20, command=show_checkoutItem_5)
+itemNumber_5 = customtkinter.CTkCheckBox(master=orderItem_5_frame, text="", width=20, command=lambda: show_checkoutItem(5, checkoutItem_5_frame, amountItem_5_val))
 itemNumber_5.pack(side='left', padx=(70,38))
 
 #Item Number 6
@@ -932,7 +734,7 @@ CTkLabel(master=orderItem_6_frame, text="Burger Steak", text_color="#E7F3F3", an
 
 CTkLabel(master=orderItem_6_frame, text="₱ 85.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(185, 0))
 
-itemNumber_6 = customtkinter.CTkCheckBox(master=orderItem_6_frame, text="", width=20, command=show_checkoutItem_6)
+itemNumber_6 = customtkinter.CTkCheckBox(master=orderItem_6_frame, text="", width=20, command=lambda: show_checkoutItem(6, checkoutItem_6_frame, amountItem_6_val))
 itemNumber_6.pack(side='left', padx=(70,38))
 
 #Sides
@@ -950,7 +752,7 @@ CTkLabel(master=orderItem_7_frame, text="Fries", text_color="#E7F3F3", anchor="w
 
 CTkLabel(master=orderItem_7_frame, text="₱ 35.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(267, 0))
 
-itemNumber_7 = customtkinter.CTkCheckBox(master=orderItem_7_frame, text="", width=20, command=show_checkoutItem_7)
+itemNumber_7 = customtkinter.CTkCheckBox(master=orderItem_7_frame, text="", width=20, command=lambda: show_checkoutItem(7, checkoutItem_7_frame, amountItem_7_val))
 itemNumber_7.pack(side='left', padx=(70,38))
 
 #Item Number 8
@@ -965,7 +767,7 @@ CTkLabel(master=orderItem_8_frame, text="Creamy Macaroni Soup", text_color="#E7F
 
 CTkLabel(master=orderItem_8_frame, text="₱ 55.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(83, 0))
 
-itemNumber_8 = customtkinter.CTkCheckBox(master=orderItem_8_frame, text="", width=20, command=show_checkoutItem_8)
+itemNumber_8 = customtkinter.CTkCheckBox(master=orderItem_8_frame, text="", width=20, command=lambda: show_checkoutItem(8, checkoutItem_8_frame, amountItem_8_val))
 itemNumber_8.pack(side='left', padx=(70,38))
 
 #Item Number 9
@@ -980,7 +782,7 @@ CTkLabel(master=orderItem_9_frame, text="Rice", text_color="#E7F3F3", anchor="w"
 
 CTkLabel(master=orderItem_9_frame, text="₱ 20.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(272, 0))
 
-itemNumber_9 = customtkinter.CTkCheckBox(master=orderItem_9_frame, text="", width=20, command=show_checkoutItem_9)
+itemNumber_9 = customtkinter.CTkCheckBox(master=orderItem_9_frame, text="", width=20, command=lambda: show_checkoutItem(9, checkoutItem_9_frame, amountItem_9_val))
 itemNumber_9.pack(side='left', padx=(70,38))
 
 #Item Number 10
@@ -995,7 +797,7 @@ CTkLabel(master=orderItem_10_frame, text="Gravy", text_color="#E7F3F3", anchor="
 
 CTkLabel(master=orderItem_10_frame, text="₱ 15.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(257, 0))
 
-itemNumber_10 = customtkinter.CTkCheckBox(master=orderItem_10_frame, text="", width=20, command=show_checkoutItem_10)
+itemNumber_10 = customtkinter.CTkCheckBox(master=orderItem_10_frame, text="", width=20, command=lambda: show_checkoutItem(10, checkoutItem_10_frame, amountItem_10_val))
 itemNumber_10.pack(side='left', padx=(70,38))
 
 #Desserts
@@ -1013,7 +815,7 @@ CTkLabel(master=orderItem_11_frame, text="Peach Mango Pie", text_color="#E7F3F3"
 
 CTkLabel(master=orderItem_11_frame, text="₱ 39.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(145, 0))
 
-itemNumber_11 = customtkinter.CTkCheckBox(master=orderItem_11_frame, text="", width=20, command=show_checkoutItem_11)
+itemNumber_11 = customtkinter.CTkCheckBox(master=orderItem_11_frame, text="", width=20, command=lambda: show_checkoutItem(11, checkoutItem_11_frame, amountItem_11_val))
 itemNumber_11.pack(side='left', padx=(70,38))
 
 #Item Number 12
@@ -1028,7 +830,7 @@ CTkLabel(master=orderItem_12_frame, text="Chocolate Sundae", text_color="#E7F3F3
 
 CTkLabel(master=orderItem_12_frame, text="₱ 39.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(131, 0))
 
-itemNumber_12 = customtkinter.CTkCheckBox(master=orderItem_12_frame, text="", width=20, command=show_checkoutItem_12)
+itemNumber_12 = customtkinter.CTkCheckBox(master=orderItem_12_frame, text="", width=20, command=lambda: show_checkoutItem(12, checkoutItem_12_frame, amountItem_12_val))
 itemNumber_12.pack(side='left', padx=(70,38))
 
 #Beverages
@@ -1046,7 +848,7 @@ CTkLabel(master=orderItem_13_frame, text="Coke", text_color="#E7F3F3", anchor="w
 
 CTkLabel(master=orderItem_13_frame, text="₱ 35.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(262, 0))
 
-itemNumber_13 = customtkinter.CTkCheckBox(master=orderItem_13_frame, text="", width=20, command=show_checkoutItem_13)
+itemNumber_13 = customtkinter.CTkCheckBox(master=orderItem_13_frame, text="", width=20, command=lambda: show_checkoutItem(13, checkoutItem_13_frame, amountItem_13_val))
 itemNumber_13.pack(side='left', padx=(70,38))
 
 #Item Number 14
@@ -1061,7 +863,7 @@ CTkLabel(master=orderItem_14_frame, text="Sprite", text_color="#E7F3F3", anchor=
 
 CTkLabel(master=orderItem_14_frame, text="₱ 35.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(252, 0))
 
-itemNumber_14 = customtkinter.CTkCheckBox(master=orderItem_14_frame, text="", width=20, command=show_checkoutItem_14)
+itemNumber_14 = customtkinter.CTkCheckBox(master=orderItem_14_frame, text="", width=20, command=lambda: show_checkoutItem(14, checkoutItem_14_frame, amountItem_14_val))
 itemNumber_14.pack(side='left', padx=(70,38))
 
 #Item Number 15
@@ -1076,7 +878,7 @@ CTkLabel(master=orderItem_15_frame, text="Pineapple juice", text_color="#E7F3F3"
 
 CTkLabel(master=orderItem_15_frame, text="₱ 35.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(160, 0))
 
-itemNumber_15 = customtkinter.CTkCheckBox(master=orderItem_15_frame, text="", width=20, command=show_checkoutItem_15)
+itemNumber_15 = customtkinter.CTkCheckBox(master=orderItem_15_frame, text="", width=20, command=lambda: show_checkoutItem(15, checkoutItem_15_frame, amountItem_15_val))
 itemNumber_15.pack(side='left', padx=(70,38))
 
 #Item Number 16
@@ -1091,7 +893,7 @@ CTkLabel(master=orderItem_16_frame, text="Hot Chocolate", text_color="#E7F3F3", 
 
 CTkLabel(master=orderItem_16_frame, text="₱ 35.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(173, 0))
 
-itemNumber_16 = customtkinter.CTkCheckBox(master=orderItem_16_frame, text="", width=20, command=show_checkoutItem_16)
+itemNumber_16 = customtkinter.CTkCheckBox(master=orderItem_16_frame, text="", width=20, command=lambda: show_checkoutItem(16, checkoutItem_16_frame, amountItem_16_val))
 itemNumber_16.pack(side='left', padx=(70,38))
 
 #Item Number 17
@@ -1106,7 +908,7 @@ CTkLabel(master=orderItem_17_frame, text="Iced Tea", text_color="#E7F3F3", ancho
 
 CTkLabel(master=orderItem_17_frame, text="₱ 35.00", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 19),).pack(side='left', padx=(229, 0))
 
-itemNumber_17 = customtkinter.CTkCheckBox(master=orderItem_17_frame, text="", width=20, command=show_checkoutItem_17)
+itemNumber_17 = customtkinter.CTkCheckBox(master=orderItem_17_frame, text="", width=20, command=lambda: show_checkoutItem(17, checkoutItem_17_frame, amountItem_17_val))
 itemNumber_17.pack(side='left', padx=(70,38))
 
 #################################################################################
@@ -1124,122 +926,11 @@ checkoutScrollable_frame = CTkScrollableFrame(master=checkout_frame, fg_color="t
 checkoutScrollable_frame.pack(anchor="w", padx=(17, 0), pady=(20, 0))
 
 #####
-def removeItem_1():
-    itemNumber_1.deselect()
-    checkoutItem_1_frame.forget()
-    Total['TA_1'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_2():
-    itemNumber_2.deselect()
-    checkoutItem_2_frame.forget()
-    Total['TA_2'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱" + str(Total_Amount) + ".00")
-
-def removeItem_3():
-    itemNumber_3.deselect()
-    checkoutItem_3_frame.forget()
-    Total['TA_3'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_4():
-    itemNumber_4.deselect()
-    checkoutItem_4_frame.forget()
-    Total['TA_4'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_5():
-    itemNumber_5.deselect()
-    checkoutItem_5_frame.forget()
-    Total['TA_5'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_6():
-    itemNumber_6.deselect()
-    checkoutItem_6_frame.forget()
-    Total['TA_6'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_7():
-    itemNumber_7.deselect()
-    checkoutItem_7_frame.forget()
-    Total['TA_7'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_8():
-    itemNumber_8.deselect()
-    checkoutItem_8_frame.forget()
-    Total['TA_8'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_9():
-    itemNumber_9.deselect()
-    checkoutItem_9_frame.forget()
-    Total['TA_9'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_10():
-    itemNumber_10.deselect()
-    checkoutItem_10_frame.forget()
-    Total['TA_10'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_11():
-    itemNumber_11.deselect()
-    checkoutItem_11_frame.forget()
-    Total['TA_11'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_12():
-    itemNumber_12.deselect()
-    checkoutItem_12_frame.forget()
-    Total['TA_12'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_13():
-    itemNumber_13.deselect()
-    checkoutItem_13_frame.forget()
-    Total['TA_13'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_14():
-    itemNumber_14.deselect()
-    checkoutItem_14_frame.forget()
-    Total['TA_14'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_15():
-    itemNumber_15.deselect()
-    checkoutItem_15_frame.forget()
-    Total['TA_15'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_16():
-    itemNumber_16.deselect()
-    checkoutItem_16_frame.forget()
-    Total['TA_16'] = 0
-    Total_Amount = sum(Total.values())
-    totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
-
-def removeItem_17():
-    itemNumber_17.deselect()
-    checkoutItem_17_frame.forget()
-    Total['TA_17'] = 0
+def removeItem(item_number):
+    global Total_Amount
+    globals()[f'itemNumber_{item_number}'].deselect()
+    globals()[f'checkoutItem_{item_number}_frame'].forget()
+    Total[f'TA_{item_number}'] = 0
     Total_Amount = sum(Total.values())
     totalAmount.configure(text="₱ " + str(Total_Amount) + ".00")
 
@@ -1272,7 +963,7 @@ amountItem_1_val = 95 * int(quantityItem_1.get())
 amountItem_1 = CTkLabel(master=checkoutItem_1_frame, text=amountItem_1_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_1.pack(side='left', padx=(49, 0))
 
-removeItem_1_button = CTkButton(master=checkoutItem_1_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_1)
+removeItem_1_button = CTkButton(master=checkoutItem_1_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(1))
 removeItem_1_button.pack(side='left', padx=(60, 49))
 
 #item 2
@@ -1297,7 +988,7 @@ amountItem_2_val = 50 * int(quantityItem_2.get())
 amountItem_2 = CTkLabel(master=checkoutItem_2_frame, text=amountItem_2_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_2.pack(side='left', padx=(49, 0))
 
-removeItem_2_button = CTkButton(master=checkoutItem_2_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_2)
+removeItem_2_button = CTkButton(master=checkoutItem_2_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(2))
 removeItem_2_button.pack(side='left', padx=(60, 49))
 
 #item 3
@@ -1323,7 +1014,7 @@ amountItem_3_val = 160 * int(quantityItem_3.get())
 amountItem_3 = CTkLabel(master=checkoutItem_3_frame, text=amountItem_3_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_3.pack(side='left', padx=(49, 0))
 
-removeItem_3_button = CTkButton(master=checkoutItem_3_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_3)
+removeItem_3_button = CTkButton(master=checkoutItem_3_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(3))
 removeItem_3_button.pack(side='left', padx=(57, 49))
 
 #item 4
@@ -1348,7 +1039,7 @@ amountItem_4_val = 65 * int(quantityItem_4.get())
 amountItem_4 = CTkLabel(master=checkoutItem_4_frame, text=amountItem_4_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_4.pack(side='left', padx=(49, 0))
 
-removeItem_4_button = CTkButton(master=checkoutItem_4_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_4)
+removeItem_4_button = CTkButton(master=checkoutItem_4_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(4))
 removeItem_4_button.pack(side='left', padx=(60, 49))
 
 #item 5
@@ -1373,7 +1064,7 @@ amountItem_5_val = 50 * int(quantityItem_5.get())
 amountItem_5 = CTkLabel(master=checkoutItem_5_frame, text=amountItem_5_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_5.pack(side='left', padx=(49, 0))
 
-removeItem_5_button = CTkButton(master=checkoutItem_5_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right" , command=removeItem_5)
+removeItem_5_button = CTkButton(master=checkoutItem_5_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right" , command=lambda: removeItem(5))
 removeItem_5_button.pack(side='left', padx=(60, 49))
 
 #item 6
@@ -1398,7 +1089,7 @@ amountItem_6_val = 85 * int(quantityItem_6.get())
 amountItem_6 = CTkLabel(master=checkoutItem_6_frame, text=amountItem_6_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_6.pack(side='left', padx=(49, 0))
 
-removeItem_6_button = CTkButton(master=checkoutItem_6_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_6)
+removeItem_6_button = CTkButton(master=checkoutItem_6_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(6))
 removeItem_6_button.pack(side='left', padx=(60, 49))
 
 #item 7
@@ -1423,7 +1114,7 @@ amountItem_7_val = 35 * int(quantityItem_7.get())
 amountItem_7 = CTkLabel(master=checkoutItem_7_frame, text=amountItem_7_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_7.pack(side='left', padx=(49, 0))
 
-removeItem_7_button = CTkButton(master=checkoutItem_7_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_7)
+removeItem_7_button = CTkButton(master=checkoutItem_7_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(7))
 removeItem_7_button.pack(side='left', padx=(60, 49))
 
 #item 8
@@ -1448,7 +1139,7 @@ amountItem_8_val = 55 * int(quantityItem_8.get())
 amountItem_8 = CTkLabel(master=checkoutItem_8_frame, text=amountItem_8_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_8.pack(side='left', padx=(49, 0))
 
-removeItem_8_button = CTkButton(master=checkoutItem_8_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_8)
+removeItem_8_button = CTkButton(master=checkoutItem_8_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(8))
 removeItem_8_button.pack(side='left', padx=(60, 49))
 
 #item 9
@@ -1473,7 +1164,7 @@ amountItem_9_val = 20 * int(quantityItem_9.get())
 amountItem_9 = CTkLabel(master=checkoutItem_9_frame, text=amountItem_9_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_9.pack(side='left', padx=(49, 0))
 
-removeItem_9_button = CTkButton(master=checkoutItem_9_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_9)
+removeItem_9_button = CTkButton(master=checkoutItem_9_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(9))
 removeItem_9_button.pack(side='left', padx=(60, 49))
 
 #item 10
@@ -1498,7 +1189,7 @@ amountItem_10_val = 15 * int(quantityItem_10.get())
 amountItem_10 = CTkLabel(master=checkoutItem_10_frame, text=amountItem_10_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_10.pack(side='left', padx=(49, 0))
 
-removeItem_10_button = CTkButton(master=checkoutItem_10_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_10)
+removeItem_10_button = CTkButton(master=checkoutItem_10_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(10))
 removeItem_10_button.pack(side='left', padx=(60, 49))
 
 #item 11
@@ -1523,7 +1214,7 @@ amountItem_11_val = 39 * int(quantityItem_11.get())
 amountItem_11 = CTkLabel(master=checkoutItem_11_frame, text=amountItem_11_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_11.pack(side='left', padx=(49, 0))
 
-removeItem_11_button = CTkButton(master=checkoutItem_11_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_11)
+removeItem_11_button = CTkButton(master=checkoutItem_11_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(11))
 removeItem_11_button.pack(side='left', padx=(60, 49))
 
 #item 12
@@ -1548,7 +1239,7 @@ amountItem_12_val = 39 * int(quantityItem_12.get())
 amountItem_12 = CTkLabel(master=checkoutItem_12_frame, text=amountItem_12_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_12.pack(side='left', padx=(49, 0))
 
-removeItem_12_button = CTkButton(master=checkoutItem_12_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_12)
+removeItem_12_button = CTkButton(master=checkoutItem_12_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(12))
 removeItem_12_button.pack(side='left', padx=(60, 49))
 
 #item 13
@@ -1573,7 +1264,7 @@ amountItem_13_val = 35 * int(quantityItem_13.get())
 amountItem_13 = CTkLabel(master=checkoutItem_13_frame, text=amountItem_13_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_13.pack(side='left', padx=(49, 0))
 
-removeItem_13_button = CTkButton(master=checkoutItem_13_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_13)
+removeItem_13_button = CTkButton(master=checkoutItem_13_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(13))
 removeItem_13_button.pack(side='left', padx=(60, 49))
 
 #item 14
@@ -1598,7 +1289,7 @@ amountItem_14_val = 35 * int(quantityItem_14.get())
 amountItem_14 = CTkLabel(master=checkoutItem_14_frame, text=amountItem_14_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_14.pack(side='left', padx=(49, 0))
 
-removeItem_14_button = CTkButton(master=checkoutItem_14_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_14)
+removeItem_14_button = CTkButton(master=checkoutItem_14_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(14))
 removeItem_14_button.pack(side='left', padx=(60, 49))
 
 #item 15
@@ -1623,7 +1314,7 @@ amountItem_15_val = 35 * int(quantityItem_15.get())
 amountItem_15 = CTkLabel(master=checkoutItem_15_frame, text=amountItem_15_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_15.pack(side='left', padx=(49, 0))
 
-removeItem_15_button = CTkButton(master=checkoutItem_15_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_15)
+removeItem_15_button = CTkButton(master=checkoutItem_15_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(15))
 removeItem_15_button.pack(side='left', padx=(60, 49))
 
 #item 16
@@ -1648,7 +1339,7 @@ amountItem_16_val = 35 * int(quantityItem_16.get())
 amountItem_16 = CTkLabel(master=checkoutItem_16_frame, text=amountItem_16_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_16.pack(side='left', padx=(49, 0))
 
-removeItem_16_button = CTkButton(master=checkoutItem_16_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_16)
+removeItem_16_button = CTkButton(master=checkoutItem_16_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(16))
 removeItem_16_button.pack(side='left', padx=(60, 49))
 
 #item 17
@@ -1673,7 +1364,7 @@ amountItem_17_val = 35 * int(quantityItem_17.get())
 amountItem_17 = CTkLabel(master=checkoutItem_17_frame, text=amountItem_17_val, text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 14))
 amountItem_17.pack(side='left', padx=(49, 0))
 
-removeItem_17_button = CTkButton(master=checkoutItem_17_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=removeItem_17)
+removeItem_17_button = CTkButton(master=checkoutItem_17_frame, image=remove_img, text="", fg_color="#981616", font=("Poppins Bold", 12), hover_color="#480A0A", anchor="e", width=25, height=25, compound="right", command=lambda: removeItem(17))
 removeItem_17_button.pack(side='left', padx=(60, 49))
 
 #BOTTOM FRAME
@@ -1896,7 +1587,10 @@ totalSalesLabel_command()
 
 CTkLabel(master=History_frame, text="Order History", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 27),).pack(anchor="nw" , padx=(27, 0), pady=(20, 0))
 
-InventTable_data = [["Order ID", "Time Ordered", "Sales", "Status"]]  # Initialize with headers
+if loggedin_employee_id == "admin":
+    InventTable_data = [["Order ID", "Time Ordered", "Sales", "Status", "Employee ID"]]  # Initialize with headers
+else:
+    InventTable_data = [["Order ID", "Time Ordered", "Sales", "Status"]]  # Initialize with headers
 
 InventTable_frame = CTkScrollableFrame(master=History_frame, fg_color="transparent")
 InventTable_frame.pack(expand=True, fill="both", padx=27, pady=21, side='bottom')
@@ -1909,12 +1603,20 @@ def show_InventTable():
         #retrieve data from database and put it in the table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
-        #retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE employee_ID = %s"
-        val = (loggedin_employee_id,)
-        mycursor.execute(sql, val)
-        myresult = mycursor.fetchall()
-        return myresult
+        #if the logged in employee is admin, retrieve all the data from the orders table
+        if loggedin_employee_id == "admin":
+            sql = "SELECT order_id, time_ordered, sales, status, employee_ID FROM orders"
+            mycursor.execute(sql)
+            myresult = mycursor.fetchall()
+            return myresult
+        #if the logged in employee is not admin, retrieve only the data from the orders table that has the same employee_ID as the logged in employee
+        else:
+            #retrieve the orders table data which only order_id, time_ordered, time_est
+            sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE employee_ID = %s"
+            val = (loggedin_employee_id,)
+            mycursor.execute(sql, val)
+            myresult = mycursor.fetchall()
+            return myresult
 
     def format_result_to_table_data(myresult, header=["Order ID", "Time Ordered", "Sales", "Status"]):
         InventTable_data = [header]
@@ -1923,8 +1625,19 @@ def show_InventTable():
             InventTable_data.append([order_id, formatted_time_ordered, sales, status])
 
         return InventTable_data
+
+    def format_result_to_table_data_admin(myresult, header=["Order ID", "Time Ordered", "Sales", "Status", "Employee ID"]):
+        InventTable_data = [header]
+        for order_id, time_ordered, sales, status, employee_ID in myresult:
+            formatted_time_ordered = time_ordered.strftime("%Y-%m-%d %H:%M:%S")
+            InventTable_data.append([order_id, formatted_time_ordered, sales, status, employee_ID])
+
+        return InventTable_data
     
-    InventTable_data = format_result_to_table_data(retreive_data_for_database())
+    if loggedin_employee_id == "admin":
+        InventTable_data = format_result_to_table_data_admin(retreive_data_for_database())
+    else:
+        InventTable_data = format_result_to_table_data(retreive_data_for_database())
 
     InventTable.destroy()
 
@@ -2108,21 +1821,43 @@ def resetHistory_command():
         #connect to a database and delete all the data in the orders table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
-        sql = """
+
+        # Query to retrieve orders for the logged in employee
+        sql = "SELECT order_id FROM orders WHERE employee_ID = %s"
+        val = (loggedin_employee_id,)
+        mycursor.execute(sql, val)
+        employee_orders = mycursor.fetchall()
+
+        # Cancel timers for these orders
+        for (order_id,) in employee_orders:
+            if order_id in list(timed_notif.keys()):
+                timed_notif[order_id].cancel()
+                del timed_notif[order_id]
+                print("Cancelled timer for order", order_id)
+                print(timed_notif)
+        else:
+            pass
+        #create a message box
+        CTkMessagebox(title="Info", message="History has been reset!")
+
+        # Delete from cart table
+        sql_cart = """
             DELETE FROM cart 
             WHERE order_id IN (
                 SELECT order_id FROM orders WHERE employee_ID = %s
             )
         """
         val = (loggedin_employee_id,)
-        mycursor.execute(sql, val)
+        mycursor.execute(sql_cart, val)
+
+        # Delete from orders table
+        sql_orders = "DELETE FROM orders WHERE employee_ID = %s"
+        mycursor.execute(sql_orders, val)
+
+        mydb.commit()
         mydb.commit()
         mycursor.close()
         mydb.close()
-        #create a message box
-        CTkMessagebox(title="Info", message="History has been reset!")
-    else:
-        pass
 
 def ADMINresetHistory_command():
     # get yes/no answers
@@ -2133,6 +1868,16 @@ def ADMINresetHistory_command():
         #connect to a database and delete all the data in the orders table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
+
+        #reset or cancel all the timed_notif[order_id].cancel() made in delays_popup()
+        for order_id in list(timed_notif.keys()):
+            if order_id in timed_notif:
+                timed_notif[order_id].cancel()
+                del timed_notif[order_id]
+                print("Cancelled timer for order", order_id)
+                print(timed_notif)
+        else:
+            pass
         sql = "DELETE FROM cart"
         mycursor.execute(sql)
         sql = "DELETE FROM orders"
@@ -2142,8 +1887,6 @@ def ADMINresetHistory_command():
         mydb.close()
         #create a message box
         CTkMessagebox(title="Info", message="History has been reset!")
-    else:
-        pass
 
 resetHistory_button = CTkButton(master=accountsettingsScrollable_frame, text="Reset History", font=("Poppins Bold", 10), hover_color="#480A0A", anchor="center", width=118, height=20, fg_color="#981616", command=resetHistory_command)
 resetHistory_button.pack(anchor='center', padx=(10, 15), pady=(15, 10))
