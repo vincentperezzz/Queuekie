@@ -404,6 +404,10 @@ def voidorder_command():
     mycursor.execute(sql, val)
     mydb.commit()
     print(mycursor.rowcount, "Record Updated Succesfully.")
+    #cancel timers for the order where order_id = searchORDERID_entry.get()
+    if searchORDERID_entry.get() in timed_notif:
+        timed_notif[searchORDERID_entry.get()].cancel()
+        del timed_notif[searchORDERID_entry.get()]
     #update table
     show_dbtable()
     orders_label_command()
@@ -2132,6 +2136,24 @@ def resetHistory_command():
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
 
+        # Query to retrieve orders for the logged in employee
+        sql = "SELECT order_id FROM orders WHERE employee_ID = %s"
+        val = (loggedin_employee_id,)
+        mycursor.execute(sql, val)
+        employee_orders = mycursor.fetchall()
+
+        # Cancel timers for these orders
+        for (order_id,) in employee_orders:
+            if order_id in list(timed_notif.keys()):
+                timed_notif[order_id].cancel()
+                del timed_notif[order_id]
+                print("Cancelled timer for order", order_id)
+                print(timed_notif)
+        else:
+            pass
+        #create a message box
+        CTkMessagebox(title="Info", message="History has been reset!")
+
         # Delete from cart table
         sql_cart = """
             DELETE FROM cart 
@@ -2151,12 +2173,6 @@ def resetHistory_command():
         mycursor.close()
         mydb.close()
 
-        #reset all the delayed notification
-        #create a message box
-        CTkMessagebox(title="Info", message="History has been reset!")
-    else:
-        pass
-
 def ADMINresetHistory_command():
     # get yes/no answers
     msg = CTkMessagebox(title="RESET ALL USERS HISTORY?", message="Do you want to reset the \nENTIRE History?", icon="question", option_1="Cancel", option_2="No", option_3="Yes")
@@ -2166,6 +2182,16 @@ def ADMINresetHistory_command():
         #connect to a database and delete all the data in the orders table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
+
+        #reset or cancel all the timed_notif[order_id].cancel() made in delays_popup()
+        for order_id in list(timed_notif.keys()):
+            if order_id in timed_notif:
+                timed_notif[order_id].cancel()
+                del timed_notif[order_id]
+                print("Cancelled timer for order", order_id)
+                print(timed_notif)
+        else:
+            pass
         sql = "DELETE FROM cart"
         mycursor.execute(sql)
         sql = "DELETE FROM orders"
@@ -2175,8 +2201,6 @@ def ADMINresetHistory_command():
         mydb.close()
         #create a message box
         CTkMessagebox(title="Info", message="History has been reset!")
-    else:
-        pass
 
 resetHistory_button = CTkButton(master=accountsettingsScrollable_frame, text="Reset History", font=("Poppins Bold", 10), hover_color="#480A0A", anchor="center", width=118, height=20, fg_color="#981616", command=resetHistory_command)
 resetHistory_button.pack(anchor='center', padx=(10, 15), pady=(15, 10))
