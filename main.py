@@ -2101,7 +2101,32 @@ deleteAccount_button.pack(anchor='center', padx=(10, 15), pady=(15, 0))
 
 def resetInventory_command():
     # get yes/no answers
-    msg = CTkMessagebox(title="RESET INVENTORY?", message="Do you want to reset the \nENTIRE INVENTORY?", icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+    msg = CTkMessagebox(title="RESET Your History?", message="Do you want to reset \nYOUR INVENTORY?", icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+    response = msg.get()
+    
+    if response=="Yes":
+        #connect to a database and delete all the data in the orders table
+        mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+        mycursor = mydb.cursor()
+        sql = """
+            DELETE FROM cart 
+            WHERE order_id IN (
+                SELECT order_id FROM orders WHERE employee_ID = %s
+            )
+        """
+        val = (loggedin_employee_id,)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        mycursor.close()
+        mydb.close()
+        #create a message box
+        CTkMessagebox(title="Info", message="Inventory has been reset!")
+    else:
+        pass
+
+def ADMINresetInventory_command():
+    # get yes/no answers
+    msg = CTkMessagebox(title="RESET ALL USERS INVENTORY?", message="Do you want to reset the \nENTIRE INVENTORY?", icon="question", option_1="Cancel", option_2="No", option_3="Yes")
     response = msg.get()
     
     if response=="Yes":
@@ -2123,5 +2148,7 @@ def resetInventory_command():
 resetInventory_button = CTkButton(master=accountsettingsScrollable_frame, text="Reset Inventory", font=("Poppins Bold", 10), hover_color="#480A0A", anchor="center", width=118, height=20, fg_color="#981616", command=resetInventory_command)
 resetInventory_button.pack(anchor='center', padx=(10, 15), pady=(15, 10))
 
+if loggedin_employee_id == "admin":
+    resetInventory_button.configure(text="RESET ALL USERS HISTORY", command=ADMINresetInventory_command)
 
 app.mainloop()
