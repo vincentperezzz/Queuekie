@@ -60,7 +60,7 @@ def dashboard_command():
     dashboard_button.configure(fg_color="#191D32")
     order_button.configure(fg_color="transparent")
     checkout_button.configure(fg_color="transparent")
-    inventory_button.configure(fg_color="transparent")
+    History_button.configure(fg_color="transparent")
     accountsettings_button.configure(fg_color="transparent")
     logout_button.configure(fg_color="transparent")
 
@@ -68,7 +68,7 @@ def dashboard_command():
     dashboard_frame.pack(fill="both", expand=True, side="left")
     order_frame.pack_forget()
     checkout_frame.pack_forget()
-    inventory_frame.pack_forget()
+    History_frame.pack_forget()
     accountsettings_frame.pack_forget()
 
     #other functions
@@ -87,7 +87,7 @@ def order_command():
     dashboard_button.configure(fg_color="transparent")
     order_button.configure(fg_color="#191D32")
     checkout_button.configure(fg_color="transparent")
-    inventory_button.configure(fg_color="transparent")
+    History_button.configure(fg_color="transparent")
     accountsettings_button.configure(fg_color="transparent")
     logout_button.configure(fg_color="transparent")
 
@@ -95,7 +95,7 @@ def order_command():
     dashboard_frame.pack_forget()
     order_frame.pack(fill="both", expand=True, side="left")
     checkout_frame.pack_forget()
-    inventory_frame.pack_forget()
+    History_frame.pack_forget()
     accountsettings_frame.pack_forget()
 
     #other functions
@@ -111,7 +111,7 @@ def checkout_command():
     dashboard_button.configure(fg_color="transparent")
     order_button.configure(fg_color="transparent")
     checkout_button.configure(fg_color="#191D32")
-    inventory_button.configure(fg_color="transparent")
+    History_button.configure(fg_color="transparent")
     accountsettings_button.configure(fg_color="transparent")
     logout_button.configure(fg_color="transparent")
 
@@ -119,7 +119,7 @@ def checkout_command():
     dashboard_frame.pack_forget()
     order_frame.pack_forget()
     checkout_frame.pack(fill="both", expand=True, side="left")
-    inventory_frame.pack_forget()
+    History_frame.pack_forget()
     accountsettings_frame.pack_forget()
 
     #other functions
@@ -130,12 +130,12 @@ checkout_img = CTkImage(dark_image=checkout_img_data, light_image=checkout_img_d
 checkout_button = CTkButton(master=sidebar_frame, image=checkout_img, text="Check Out", fg_color="transparent", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=checkout_command)
 checkout_button.pack(anchor="center", pady=(10, 0))
 
-def inventory_command():
-    print("Inventory button pressed")
+def History_command():
+    print("History button pressed")
     dashboard_button.configure(fg_color="transparent")
     order_button.configure(fg_color="transparent")
     checkout_button.configure(fg_color="transparent")
-    inventory_button.configure(fg_color="#191D32")
+    History_button.configure(fg_color="#191D32")
     accountsettings_button.configure(fg_color="transparent")
     logout_button.configure(fg_color="transparent")
 
@@ -143,7 +143,7 @@ def inventory_command():
     dashboard_frame.pack_forget()
     order_frame.pack_forget()
     checkout_frame.pack_forget()
-    inventory_frame.pack(fill="both", expand=True, side="left")
+    History_frame.pack(fill="both", expand=True, side="left")
     accountsettings_frame.pack_forget()
 
     #other functions
@@ -151,17 +151,17 @@ def inventory_command():
     completedOrdersLabel_command()
     totalSalesLabel_command()
 
-inventory_img_data = Image.open("resources/inventory_icon.png")
-inventory_img = CTkImage(dark_image=inventory_img_data, light_image=inventory_img_data)
-inventory_button = CTkButton(master=sidebar_frame, image=inventory_img, text="Inventory", fg_color="transparent", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=inventory_command)
-inventory_button.pack(anchor="center", pady=(10, 0))
+History_img_data = Image.open("resources/history_icon.png")
+History_img = CTkImage(dark_image=History_img_data, light_image=History_img_data)
+History_button = CTkButton(master=sidebar_frame, image=History_img, text="History", fg_color="transparent", font=("Poppins Bold", 12), hover_color="#181A27", anchor="w", width=157, height=38, command=History_command)
+History_button.pack(anchor="center", pady=(10, 0))
 
 def accountsettings_command():
     print("Account Settings button pressed")
     dashboard_button.configure(fg_color="transparent")
     order_button.configure(fg_color="transparent")
     checkout_button.configure(fg_color="transparent")
-    inventory_button.configure(fg_color="transparent")
+    History_button.configure(fg_color="transparent")
     accountsettings_button.configure(fg_color="#191D32")
     logout_button.configure(fg_color="transparent")
 
@@ -169,7 +169,7 @@ def accountsettings_command():
     dashboard_frame.pack_forget()
     order_frame.pack_forget()
     checkout_frame.pack_forget()
-    inventory_frame.pack_forget()
+    History_frame.pack_forget()
     accountsettings_frame.pack(fill="both", expand=True, side="left")
 
     #other_functions
@@ -185,7 +185,7 @@ def logout_command():
     dashboard_button.configure(fg_color="transparent")
     order_button.configure(fg_color="transparent")
     checkout_button.configure(fg_color="transparent")
-    inventory_button.configure(fg_color="transparent")
+    History_button.configure(fg_color="transparent")
     accountsettings_button.configure(fg_color="transparent")
     logout_button.configure(fg_color="#191D32")
 
@@ -223,8 +223,9 @@ def orders_label_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #retrieve all the orders from the orders table and count all who have a status of 'Processing'
-    sql = "SELECT * FROM orders WHERE status IN ('Processing', 'Postponed')"
-    mycursor.execute(sql)
+    sql = "SELECT * FROM orders WHERE status IN ('Processing', 'Postponed') AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
     numoforders_NUM.configure(text=str(len(myresult)))
@@ -234,8 +235,9 @@ def delays_label_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #retrieve all the orders from the orders table and count all who have a status of 'Postponed'
-    sql = "SELECT * FROM orders WHERE status = 'Postponed'"
-    mycursor.execute(sql)
+    sql = "SELECT * FROM orders WHERE status = 'Postponed' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
     numofdelays_NUM.configure(text=str(len(myresult)))
@@ -245,8 +247,9 @@ def voided_label_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #retrieve all the orders from the orders table and count all who have a status of 'Voided'
-    sql = "SELECT * FROM orders WHERE status = 'Voided'"
-    mycursor.execute(sql)
+    sql = "SELECT * FROM orders WHERE status = 'Voided' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     myresult = mycursor.fetchall()
     #put the number of orders in the label
     numofvoided_NUM.configure(text=str(len(myresult)))
@@ -396,8 +399,8 @@ def voidorder_command():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()
     #update the status of the order to 'Voided' where order_id = searchORDERID_entry.get()
-    sql = "UPDATE orders SET status = 'Voided' WHERE order_id = %s"
-    val = (searchORDERID_entry.get(),)
+    sql = "UPDATE orders SET status = 'Voided' WHERE order_id = %s AND employee_ID = %s"
+    val = (searchORDERID_entry.get(), loggedin_employee_id)
     mycursor.execute(sql, val)
     mydb.commit()
     print(mycursor.rowcount, "Record Updated Succesfully.")
@@ -455,8 +458,8 @@ def show_dbtable():
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
         # Retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, time_est, time_finished FROM orders WHERE status IN (%s, %s)"
-        val = ("Processing", "Postponed")
+        sql = "SELECT order_id, time_ordered, time_est, time_finished FROM orders WHERE status IN (%s, %s) AND employee_ID = %s"
+        val = ("Processing", "Postponed", loggedin_employee_id)
         mycursor.execute(sql, val)
         myresult = mycursor.fetchall()
         return myresult
@@ -556,8 +559,9 @@ def delays_popup():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()    
     # Query to retrieve orders with 'Processing' status
-    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing'"
-    mycursor.execute(sql)
+    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     processing_orders = mycursor.fetchall()
 
     for order_id, time_finished in processing_orders:
@@ -583,8 +587,9 @@ def overdue_popup():
     mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
     mycursor = mydb.cursor()    
     # Query to retrieve orders with 'Processing' status
-    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing'"
-    mycursor.execute(sql)
+    sql = "SELECT order_id, time_finished FROM orders WHERE status = 'Processing' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     processing_orders = mycursor.fetchall()
     for order_id, time_finished in processing_orders:
         # Handle overdue orders as needed
@@ -1786,8 +1791,8 @@ def addInQueue_OrdersTable():
             finished_time = current_time + timedelta(minutes=max_est_time_result)
 
         # Insert the new order into the "orders" table
-        sql = "INSERT INTO orders (order_id, time_ordered, sales, status, time_est, time_finished) VALUES (%s, %s, %s, %s, %s, %s)"
-        val = (order_id, current_time, Total_Amount, status, estimated_time, finished_time)
+        sql = "INSERT INTO orders (order_id, time_ordered, sales, status, time_est, time_finished, employee_ID) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        val = (order_id, current_time, Total_Amount, status, estimated_time, finished_time, loggedin_employee_id)
         mycursor.execute(sql, val)
         mydb.commit()
 
@@ -1821,19 +1826,19 @@ addQueue_button.configure(state="disabled")
 
 
 #################################################################################
-#Inventory Frame
+#History Frame
 #################################################################################
 
-inventory_frame = CTkFrame(master=app, fg_color="#020410",  width=680, height=645, corner_radius=0)
-inventory_frame.pack_forget()
-inventory_frame.pack_propagate(0)
-inventory_frame.pack(side="left")
+History_frame = CTkFrame(master=app, fg_color="#020410",  width=680, height=645, corner_radius=0)
+History_frame.pack_forget()
+History_frame.pack_propagate(0)
+History_frame.pack(side="left")
 
-CTkLabel(master=inventory_frame, text="Inventory", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 27),).pack(anchor="w", padx=(27, 0), pady=(29, 0))
+CTkLabel(master=History_frame, text="History", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 27),).pack(anchor="w", padx=(27, 0), pady=(29, 0))
 
 # Rectangle Parent frame of Rectangles
-inventoryRectangle_frame = CTkFrame(master=inventory_frame, fg_color="transparent", width=680, height=70, corner_radius=4)
-inventoryRectangle_frame.pack(anchor="w", padx=(27, 0), pady=(15, 0))
+HistoryRectangle_frame = CTkFrame(master=History_frame, fg_color="transparent", width=680, height=70, corner_radius=4)
+HistoryRectangle_frame.pack(anchor="w", padx=(27, 0), pady=(15, 0))
 
 def completedOrdersLabel_command():
     #connect to database
@@ -1841,8 +1846,9 @@ def completedOrdersLabel_command():
     mycursor = mydb.cursor()
 
     #retrieve the orders table data which only gets the status that is "Completed" and "Delayed"
-    sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE status = 'Completed'"
-    mycursor.execute(sql)
+    sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE status = 'Completed' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     myresult = mycursor.fetchall()
     #count the number of completed orders orders and put it in the label
     numofcompletedorders_NUM.configure(text=str(len(myresult)))
@@ -1853,8 +1859,9 @@ def totalSalesLabel_command():
     mycursor = mydb.cursor()
 
     #retrieve the orders table data which only gets the sales except the status that is "Voided"
-    sql = "SELECT sales FROM orders WHERE status != 'Voided'"
-    mycursor.execute(sql)
+    sql = "SELECT sales FROM orders WHERE status != 'Voided' AND employee_ID = %s"
+    val = (loggedin_employee_id,)
+    mycursor.execute(sql, val)
     myresult = mycursor.fetchall()
     #count the number of completed orders orders and put it in the label
     total_sales = 0
@@ -1863,18 +1870,18 @@ def totalSalesLabel_command():
     numoftotalSales_NUM.configure(text="₱ " + str(total_sales))
 
 # Completed Orders Rectangle
-inventoryOrders_rectangle = CTkFrame(master=inventoryRectangle_frame, fg_color="#70179A", width=201, height=70, corner_radius=4)
-inventoryOrders_rectangle.pack_propagate(False)
-inventoryOrders_rectangle.pack(side='left')
+HistoryOrders_rectangle = CTkFrame(master=HistoryRectangle_frame, fg_color="#70179A", width=201, height=70, corner_radius=4)
+HistoryOrders_rectangle.pack_propagate(False)
+HistoryOrders_rectangle.pack(side='left')
 
-numofcompletedorders_label = CTkLabel(master=inventoryOrders_rectangle, text="Completed Orders", fg_color="transparent", text_color="#fff", font=("Poppins Bold", 15), anchor="w", width=201)
+numofcompletedorders_label = CTkLabel(master=HistoryOrders_rectangle, text="Completed Orders", fg_color="transparent", text_color="#fff", font=("Poppins Bold", 15), anchor="w", width=201)
 numofcompletedorders_label.pack(anchor="w", padx=(10, 0), pady=(5, 0))
 
-numofcompletedorders_NUM = CTkLabel(master=inventoryOrders_rectangle, text="₱ 0.00", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=201)
+numofcompletedorders_NUM = CTkLabel(master=HistoryOrders_rectangle, text="₱ 0.00", text_color="#fff",fg_color="transparent", font=("Poppins Bold", 25), anchor="w", width=201)
 numofcompletedorders_NUM.pack(anchor="w" , padx=(10, 0), pady=(0, 0))
 
 # Total Sales Rectangle
-totalSales_rectangle = CTkFrame(master=inventoryRectangle_frame, fg_color="#146C63", width=201, height=70, corner_radius=4)
+totalSales_rectangle = CTkFrame(master=HistoryRectangle_frame, fg_color="#146C63", width=201, height=70, corner_radius=4)
 totalSales_rectangle.pack_propagate(False)
 totalSales_rectangle.pack(side='left', padx=(20, 0))
 
@@ -1887,11 +1894,11 @@ numoftotalSales_NUM.pack(anchor="w" , padx=(10, 0), pady=(0, 0))
 completedOrdersLabel_command()
 totalSalesLabel_command()
 
-CTkLabel(master=inventory_frame, text="Order History", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 27),).pack(anchor="nw" , padx=(27, 0), pady=(20, 0))
+CTkLabel(master=History_frame, text="Order History", text_color="#E7F3F3", anchor="w", justify="left", font=("Poppins Bold", 27),).pack(anchor="nw" , padx=(27, 0), pady=(20, 0))
 
 InventTable_data = [["Order ID", "Time Ordered", "Sales", "Status"]]  # Initialize with headers
 
-InventTable_frame = CTkScrollableFrame(master=inventory_frame, fg_color="transparent")
+InventTable_frame = CTkScrollableFrame(master=History_frame, fg_color="transparent")
 InventTable_frame.pack(expand=True, fill="both", padx=27, pady=21, side='bottom')
 
 
@@ -1903,8 +1910,9 @@ def show_InventTable():
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
         #retrieve the orders table data which only order_id, time_ordered, time_est
-        sql = "SELECT order_id, time_ordered, sales, status FROM orders"
-        mycursor.execute(sql)
+        sql = "SELECT order_id, time_ordered, sales, status FROM orders WHERE employee_ID = %s"
+        val = (loggedin_employee_id,)
+        mycursor.execute(sql, val)
         myresult = mycursor.fetchall()
         return myresult
 
@@ -2091,9 +2099,34 @@ def deleteAccount_command():
 deleteAccount_button = CTkButton(master=accountsettingsScrollable_frame, text="Delete Account", font=("Poppins Bold", 10), hover_color="#480A0A", anchor="center", width=118, height=20, fg_color="#981616", command=deleteAccount_command)
 deleteAccount_button.pack(anchor='center', padx=(10, 15), pady=(15, 0))
 
-def resetInventory_command():
+def resetHistory_command():
     # get yes/no answers
-    msg = CTkMessagebox(title="RESET INVENTORY?", message="Do you want to reset the \nENTIRE INVENTORY?", icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+    msg = CTkMessagebox(title="RESET Your History?", message="Do you want to reset \nYOUR History?", icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+    response = msg.get()
+    
+    if response=="Yes":
+        #connect to a database and delete all the data in the orders table
+        mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
+        mycursor = mydb.cursor()
+        sql = """
+            DELETE FROM cart 
+            WHERE order_id IN (
+                SELECT order_id FROM orders WHERE employee_ID = %s
+            )
+        """
+        val = (loggedin_employee_id,)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        mycursor.close()
+        mydb.close()
+        #create a message box
+        CTkMessagebox(title="Info", message="History has been reset!")
+    else:
+        pass
+
+def ADMINresetHistory_command():
+    # get yes/no answers
+    msg = CTkMessagebox(title="RESET ALL USERS HISTORY?", message="Do you want to reset the \nENTIRE History?", icon="question", option_1="Cancel", option_2="No", option_3="Yes")
     response = msg.get()
     
     if response=="Yes":
@@ -2108,12 +2141,14 @@ def resetInventory_command():
         mycursor.close()
         mydb.close()
         #create a message box
-        CTkMessagebox(title="Info", message="Inventory has been reset!")
+        CTkMessagebox(title="Info", message="History has been reset!")
     else:
         pass
 
-resetInventory_button = CTkButton(master=accountsettingsScrollable_frame, text="Reset Inventory", font=("Poppins Bold", 10), hover_color="#480A0A", anchor="center", width=118, height=20, fg_color="#981616", command=resetInventory_command)
-resetInventory_button.pack(anchor='center', padx=(10, 15), pady=(15, 10))
+resetHistory_button = CTkButton(master=accountsettingsScrollable_frame, text="Reset History", font=("Poppins Bold", 10), hover_color="#480A0A", anchor="center", width=118, height=20, fg_color="#981616", command=resetHistory_command)
+resetHistory_button.pack(anchor='center', padx=(10, 15), pady=(15, 10))
 
+if loggedin_employee_id == "admin":
+    resetHistory_button.configure(text="RESET ALL USERS HISTORY", command=ADMINresetHistory_command)
 
 app.mainloop()

@@ -58,16 +58,16 @@ create database queue_system;
 use queue_system;
 ```
 ```
-CREATE TABLE orders ( order_id INT PRIMARY KEY, time_ordered DATETIME, sales DECIMAL(10, 2), status VARCHAR(255), time_est varchar(50), time_finished DATETIME);
+CREATE TABLE users ( employee_id VARCHAR(6) PRIMARY KEY, fname VARCHAR(255), lname VARCHAR(255), password VARCHAR(255), logged_in TINYINT(1));
+```
+```
+CREATE TABLE orders ( order_id INT PRIMARY KEY, time_ordered DATETIME, sales DECIMAL(10, 2), status VARCHAR(255), time_est varchar(50), time_finished DATETIME, employee_id VARCHAR(6), FOREIGN KEY (employee_id) REFERENCES users(employee_id));
 ```
 ```
 CREATE TABLE menu ( item_code INT PRIMARY KEY, item VARCHAR(255), est_time int, price DECIMAL(10, 2));
 ```
 ```
 CREATE TABLE cart ( order_id INT, item_code INT, price DECIMAL(10, 2), quantity INT, amount DECIMAL(10, 2), FOREIGN KEY (order_id) REFERENCES orders(order_id), FOREIGN KEY (item_code) REFERENCES menu(item_code));
-```
-```
-CREATE TABLE users ( employee_id VARCHAR(6) PRIMARY KEY, fname VARCHAR(255), lname VARCHAR(255), password VARCHAR(255), logged_in TINYINT(1));
 ```
 ```
 INSERT INTO menu (item_code, item, est_time, price) VALUES (1, 'Fried Chicken w/ Rice', 17, 95), (2, 'Jolly Spaghetti', 12, 50), (3, 'Palabok Fiesta', 13, 160), (4, 'Chicken Sandwich', 7, 65), (5, 'Burger', 6, 50), (6, 'Burger Steak', 8, 85), (7, 'Fries', 4, 35), (8, 'Creamy Macaroni Soup', 3, 55), (9, 'Rice', 3, 20), (10, 'Gravy', 1, 15), (11, 'Peach Mango Pie', 2, 39), (12, 'Chocolate Sundae', 1, 39), (13, 'Coke', 1, 35), (14, 'Sprite', 1, 35), (15, 'Pineapple juice', 1, 35), (16, 'Hot Chocolate', 1, 35), (17, 'Iced Tea', 1, 35);
