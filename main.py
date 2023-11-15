@@ -1806,6 +1806,7 @@ def deleteAccount_command():
         print(mycursor.rowcount, "Password record(s) affected")
         if msg.get() == "Thanks":
             app.destroy()
+            os.system("python startup.py")
     else:
         pass
 
