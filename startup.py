@@ -130,6 +130,10 @@ def show_existing_error():
     # Show some error message
     CTkMessagebox(title="Error", message="The Employee ID already exists \nPlease try again", icon="cancel")
 
+def invalid_Name_error():
+    # Show some error message
+    CTkMessagebox(title="Error", message="Please enter your real name!", icon="cancel")
+
 def create_account():
     if password_entry.get() != confirmpassword_entry.get():
         print("Password does not match")
@@ -137,6 +141,13 @@ def create_account():
     elif employeeid_entry.get() == "":
         print("Employee ID cannot be empty")
         show_emptyEID_error()
+    elif fname_entry.get() == "" or lname_entry.get() == "":
+        print("Please enter your real name")
+        invalid_Name_error()
+    #elif if fname entry and lname entry is not a string
+    elif not fname_entry.get().isalpha() or not lname_entry.get().isalpha():
+        print("Please enter your real name")
+        invalid_Name_error()
     else:
         # Check if employee ID already exists in database
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
