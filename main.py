@@ -1794,16 +1794,24 @@ def deleteAccount_command():
         #connect to a database and delete all the data in the orders table
         mydb = mysql.connector.connect(host="localhost", user="root", password="", database="queue_system")
         mycursor = mydb.cursor()
+
+        # Delete user account
         sql = "DELETE FROM users WHERE employee_id = %s"
         val = (employee_id,)
         mycursor.execute(sql, val)
-        mydb.commit()
         print(mycursor.rowcount, "Account record(s) deleted")
+
+        # Delete related orders
+        sql = "DELETE FROM orders WHERE employee_id = %s"
+        mycursor.execute(sql, val)
+        print(mycursor.rowcount, "Order record(s) deleted")
+
+        mydb.commit()
         mycursor.close()
         mydb.close()
+
         #create a message box
-        msg = CTkMessagebox(message="Account has been deleted!", icon="check", option_1="Thanks")
-        print(mycursor.rowcount, "Password record(s) affected")
+        msg = CTkMessagebox(message="Account and related orders have been deleted!", icon="check", option_1="Thanks")
         if msg.get() == "Thanks":
             app.destroy()
             os.system("python startup.py")
