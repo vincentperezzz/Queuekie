@@ -79,7 +79,7 @@ INSERT INTO menu (item_code, item, est_time, price) VALUES (1, 'Fried Chicken w/
 After Installation try to run the **"startup.py"**
 
 
-## Documentation
+## QUEUEKIE: Queuing System Documentation
 
 ### INTRODUCTION 
 Queuekie is an automated queuing system that uses the Shortest Job First (SJF) algorithm to prioritize orders based on their processing times. This approach ensures a seamless experience for both customers and inventory managers by minimizing waiting times and contributing to an overall streamlined order fulfillment process.
