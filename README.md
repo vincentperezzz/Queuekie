@@ -81,16 +81,16 @@ After Installation try to run the **"startup.py"**
 
 ## Documentation
 
-###INTRODUCTION 
+### INTRODUCTION 
 Queuekie is an automated queuing system that uses the Shortest Job First (SJF) algorithm to prioritize orders based on their processing times. This approach ensures a seamless experience for both customers and inventory managers by minimizing waiting times and contributing to an overall streamlined order fulfillment process.
 
-###Purpose
+### Purpose
 The purpose of using the Shortest Job First (SJF) algorithm in order processing is to optimize efficiency and customer satisfaction, while also streamlining inventory management. SJF prioritizes orders based on their processing times, which minimizes fulfillment times and provides customers with a faster and more seamless experience.
 
-###Objective 
+### Objective 
 The objectives of leveraging the Shortest Job First (SJF) algorithm in order processing include optimizing order fulfillment times to enhance customer satisfaction, improving the efficiency of resource utilization, streamlining inventory management, and fostering overall operational agility. By prioritizing orders with the shortest processing times, the algorithm aims to expedite the delivery process, resulting in a more seamless customer experience. 
 
-###The Use of the Algorithm
+### The Use of the Algorithm
 In a fast-paced restaurant kitchen, where orders arrive in a continuous stream, the Shortest Job First (SJF) algorithm serves as an effective strategy for prioritizing and processing orders efficiently. This algorithm mimics the actions of a skilled chef who meticulously sequences orders based on their preparation times, ensuring that customers receive their meals with minimal wait times.
 
 The SJF algorithm operates by selecting the order with the shortest estimated preparation time among all pending orders. This prioritization ensures that shorter orders are completed promptly, reducing the overall waiting time for customers. Additionally, the algorithm considers the arrival time of each order, preventing newer orders from unfairly overtaking older ones.
