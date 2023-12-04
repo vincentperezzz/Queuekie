@@ -79,79 +79,22 @@ INSERT INTO menu (item_code, item, est_time, price) VALUES (1, 'Fried Chicken w/
 After Installation try to run the **"startup.py"**
 
 
-## Algorithm Documentation
+## Documentation
 
-### Implementation of the Shortest Job First (SJF) Algorithm in Queue Management
-**Introduction:**
+###INTRODUCTION 
+Queuekie is an automated queuing system that uses the Shortest Job First (SJF) algorithm to prioritize orders based on their processing times. This approach ensures a seamless experience for both customers and inventory managers by minimizing waiting times and contributing to an overall streamlined order fulfillment process.
 
-The Shortest Job First (SJF) algorithm is a fundamental scheduling and prioritization technique used in queue management systems to optimize order processing. It aims to reduce waiting times for customers by processing orders with the shortest estimated preparation times first. This documentation outlines the approach to implementing the SJF algorithm in a queue management system, particularly when orders have different time of arrival, and a non-preemptive approach is used.
+###Purpose
+The purpose of using the Shortest Job First (SJF) algorithm in order processing is to optimize efficiency and customer satisfaction, while also streamlining inventory management. SJF prioritizes orders based on their processing times, which minimizes fulfillment times and provides customers with a faster and more seamless experience.
 
-**1. Algorithm Overview:**
-The SJF algorithm focuses on the efficient processing of orders by prioritizing those with the shortest estimated preparation times (est-time). In a non-preemptive approach, once an order begins processing, it is allowed to complete without interruption. The algorithm also considers the time of order arrival to ensure fairness when est-time values are equal.
+###Objective 
+The objectives of leveraging the Shortest Job First (SJF) algorithm in order processing include optimizing order fulfillment times to enhance customer satisfaction, improving the efficiency of resource utilization, streamlining inventory management, and fostering overall operational agility. By prioritizing orders with the shortest processing times, the algorithm aims to expedite the delivery process, resulting in a more seamless customer experience. 
 
-**2. Order Data Structure:**
-Orders are represented as tuples containing the following attributes:
-```
-order_id: A unique identifier for each order.
+###The Use of the Algorithm
+In a fast-paced restaurant kitchen, where orders arrive in a continuous stream, the Shortest Job First (SJF) algorithm serves as an effective strategy for prioritizing and processing orders efficiently. This algorithm mimics the actions of a skilled chef who meticulously sequences orders based on their preparation times, ensuring that customers receive their meals with minimal wait times.
 
-est-time: The estimated preparation time for the order.
+The SJF algorithm operates by selecting the order with the shortest estimated preparation time among all pending orders. This prioritization ensures that shorter orders are completed promptly, reducing the overall waiting time for customers. Additionally, the algorithm considers the arrival time of each order, preventing newer orders from unfairly overtaking older ones.
 
-arrival_time: The time at which the order was placed.
-```
-
-**3. Sorting Orders:**
-The algorithm proceeds as follows:
-Initial sorting: Orders are sorted initially by est-time in ascending order.
-Handling ties: In cases where est-time values are equal, orders are further sorted by arrival_time in ascending order.
-
-**4. Estimated Finish Time Calculation:**
-The estimated finish time for each order is calculated based on the est-time and the order's position in the sorted queue. The formula for calculating the estimated finish time is as follows:
-```
-Estimated Finish Time = Arrival Time + Estimation Time
-```
-Arrival Time is converted to minutes.
-Estimation Time is the est-time of the order.
-
-**5. Non-Preemptive Processing:**
-Once an order begins processing, it is allowed to complete without interruption. This ensures that orders are processed fairly based on their estimated preparation times while minimizing wait times.
-
-**6. Result:**
-The result is a prioritized order queue where orders with shorter est-time values are processed first. In cases of equal est-time, orders that arrived earlier are given priority. This approach combines efficiency with fairness to enhance the customer experience.
-
-Comparison with the First Come First Serve let's compare the "First Come, First Serve" (FCFS) and the "Shortest Job First" (SJF) algorithms with examples to illustrate the differences.
-
-***Sample Data***
-| Order | Preparation Time (est-time) | Arrival Time | 
-|-------|-----------------------------|--------------|
-| 1     | 10 minutes                  | 1:00 PM      | 
-| 2     | 12 minutes                  | 1:05 PM      | 
-| 3     | 8 minutes                   | 1:10 PM      | 
-| 4     | 15 minutes                  | 1:15 PM      | 
-
-**First Come First Serve**
-| Order | Preparation Time (est-time) | Arrival Time | Finish Time |
-|-------|-----------------------------|--------------|------------|
-| 1     | 10 minutes                  | 1:00 PM      | 1:10 PM    |
-| 2     | 12 minutes                  | 1:05 PM      | 1:22 PM    |
-| 3     | 8 minutes                   | 1:10 PM      | 1:30 PM    |
-| 4     | 15 minutes                  | 1:15 PM      | 1:45 PM    |
-
-**Shortest Job First**
-| Order | Preparation Time (est-time) | Arrival Time | Finish Time |
-|-------|-----------------------------|--------------|------------|
-| 1     | 10 minutes                  | 1:00 PM      | 1:10 PM    |
-| 3     | 8 minutes                   | 1:10 PM      | 1:18 PM    |
-| 2     | 12 minutes                  | 1:05 PM      | 1:23 PM    |
-| 4     | 15 minutes                  | 1:15 PM      | 1:38 PM    |
-
-**Conclusion:**
-FCFS processes orders based on their arrival time, which can lead to longer wait times for orders with longer est-time.
-
-SJF prioritizes efficiency by processing orders with the shortest est-time first, reducing overall wait times.
-In this example, SJF leads to faster processing times and potentially happier customers as orders with shorter preparation times are completed earlier.
-The choice between FCFS and SJF depends on your specific goals and customer service standards. SJF is a valuable approach for optimizing efficiency, especially in environments where minimizing wait times is a priority.
-
-The implementation of the SJF algorithm in a queue management system, taking into account the differences in order arrival times and using a non-preemptive approach, optimizes order processing. By prioritizing orders with shorter estimated preparation times and considering the time of arrival, the system reduces wait times for customers and ensures a fair processing order. This approach helps to streamline operations and enhance overall customer satisfaction.
 
 
 ## Authors
